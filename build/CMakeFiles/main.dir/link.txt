@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/main.dir/DirectoryScanner.cc.o CMakeFiles/main.dir/KeywordProcessor.cc.o CMakeFiles/main.dir/main.cc.o -o ../main   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib -lspdlog -lfmt 

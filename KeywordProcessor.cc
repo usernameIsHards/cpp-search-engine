@@ -7,6 +7,10 @@
 #include <set>
 #include <utfcpp/utf8.h>
 
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
+
 using namespace std;
 const string &EN_dir = "./data/corpus/EN/";
 const string &CN_dir = "./data/corpus/CN/";
@@ -270,12 +274,4 @@ void KeyWordProcessor::build_en_index(const std::string &dict, const std::string
     ifs.close();
 
     ofs.close();
-}
-
-int main()
-{
-    KeyWordProcessor k;
-    k.process(CN_dir, EN_dir);
-
-    return 0;
 }
