@@ -18,7 +18,7 @@ class KeyWordProcessor
     void create_cn_dict(const std::string &dir, const std::string &outfile);
 
     // 创建中文索引库
-    void bulid_cn_index(const std::string &dict, const std::string &index);
+    void build_cn_index(const std::string &dict, const std::string &index);
 
     // 创建英文词典库
     void create_en_dict(const std::string &dir, const std::string &outfile);

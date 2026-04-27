@@ -5,17 +5,19 @@
 #include <map>
 #include <ostream>
 #include <set>
+#include <utfcpp/utf8.h>
 
 using namespace std;
 const string &EN_dir = "./data/corpus/EN/";
 const string &CN_dir = "./data/corpus/CN/";
 const string &stopwords_dir = "./data/stopwords/";
 
-const string &dict_en_dir = "./outfile/";
+const string &dict_dir = "./outfile/";
 const string &dict_en = "dict_en.dat";
-const string &index = "index.dat";
+const string &index_en_name = "index_en.dat";
 
-const string &dict_ch_dir = "./outfile/";
+const string &index_cn_name = "index_cn.dat";
+
 const string &dict_ch = "dict_ch.dat";
 
 KeyWordProcessor::KeyWordProcessor()
@@ -56,16 +58,34 @@ void KeyWordProcessor::process(const std::string &chDir, const std::string &enDi
 {
 
     create_en_dict(enDir, dict_en);
-    build_en_index(dict_en_dir, index);
+    build_en_index(dict_dir, index_en_name);
 
     create_cn_dict(chDir, dict_ch);
-    bulid_cn_index(dict_en_dir, index);
+    build_cn_index(dict_dir, index_cn_name);
+}
+
+// 提取汉字
+string filterWord_ch(const string &word)
+{
+    string res;
+    auto it = utf8::iterator<string::const_iterator>(word.begin(), word.begin(), word.end());
+    auto end = utf8::iterator<string::const_iterator>(word.end(), word.begin(), word.end());
+
+    for (; it != end; ++it)
+    {
+        if (*it >= 0x4E00 && *it <= 0x9FFF)
+        {
+            utf8::append(*it, back_inserter(res));
+        }
+    }
+
+    return res;
 }
 
 // 创建中文词典库
 void KeyWordProcessor::create_cn_dict(const std::string &dir, const std::string &outfile)
 {
-    ofstream ofs(dict_ch_dir + outfile);
+    ofstream ofs(dict_ch + outfile);
     const vector<string> &filenames = DirectoryScanner::scan(dir);
     map<string, long long> tokenFrequency;
 
@@ -75,18 +95,86 @@ void KeyWordProcessor::create_cn_dict(const std::string &dir, const std::string 
 
         assert(ifs.is_open() && "ifs.is_open()");
 
-        // 读取汉字
-        
+        string line; // 读取一行汉字
+        while (getline(ifs, line))
+        {
+            // 使用jieba分词
+            vector<string> words;
+            tokenizer_.Cut(line, words);
+
+            for (auto &word : words)
+            {
+                word = filterWord_ch(word);
+                if (word.empty() || chStopWords_.find(word) != chStopWords_.end())
+                    continue;
+                if (utf8::distance(word.begin(), word.end()) < 2)
+                    continue;
+                tokenFrequency[word]++;
+            }
+        }
+
+        ifs.close();
     }
+    for (const auto &token : tokenFrequency)
+    {
+        ofs << token.first << " " << token.second << "\n";
+    }
+
+    ofs.close();
 }
 
 // 创建中文索引库
-void KeyWordProcessor::bulid_cn_index(const std::string &dict, const std::string &index)
+void KeyWordProcessor::build_cn_index(const std::string &dict, const std::string &index)
 {
+    ifstream ifs(dict + dict_ch);
+
+    assert(ifs.is_open() && "ifs.is_open()");
+    ofstream ofs(dict_dir + index);
+
+    map<string, set<int>> wordToIndices;
+
+    int line = 1;
+    // 初始化索引
+
+    string word_line;
+    while (getline(ifs, word_line))
+    {
+
+        const char *curr = word_line.c_str();
+        const char *end = word_line.c_str() + word_line.size();
+
+        while (curr != end)
+        {
+            auto start = curr;
+            utf8::next(curr, end);
+
+            string character = string(start, curr);
+            character = filterWord_ch(character);
+            if (character.empty())
+                continue;
+
+            wordToIndices[character].insert(line);
+            // cout << character << " " << line << endl;
+        }
+        line++;
+    }
+
+    for (const auto &word : wordToIndices)
+    {
+        ofs << word.first << " ";
+        for (const auto &pos : word.second)
+        {
+            ofs << pos << " ";
+        }
+        ofs << "\n";
+    }
+    ifs.close();
+
+    ofs.close();
 }
 
 // 处理分词
-string filterWord(const string &word)
+string filterWord_en(const string &word)
 {
     string res;
     for (char c : word)
@@ -102,7 +190,7 @@ string filterWord(const string &word)
 // 创建英文词典库
 void KeyWordProcessor::create_en_dict(const std::string &dir, const std::string &outfile)
 {
-    ofstream ofs(dict_en_dir + outfile); // 创建英文词典库
+    ofstream ofs(dict_dir + outfile); // 创建英文词典库
 
     const vector<string> &filenames = DirectoryScanner::scan(dir);
 
@@ -116,7 +204,7 @@ void KeyWordProcessor::create_en_dict(const std::string &dir, const std::string 
         string word;
         while (ifs >> word)
         {
-            string new_word = filterWord(word);
+            string new_word = filterWord_en(word);
 
             if (enStopWords_.find(new_word) != enStopWords_.end() || new_word.empty())
                 continue;
@@ -142,7 +230,7 @@ void KeyWordProcessor::build_en_index(const std::string &dict, const std::string
     assert(ifs.is_open() && "ifs.is_open()");
 
     // 写入到索引库
-    ofstream ofs(dict_en_dir + index);
+    ofstream ofs(dict_dir + index);
     //  cout << dict_en_dir + index << endl;
     map<char, set<int>> wordToIndices;
 
