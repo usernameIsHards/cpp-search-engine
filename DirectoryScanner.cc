@@ -2,10 +2,8 @@
 
 #include "DirectoryScanner.h"
 
+#include "Logger.h"
 #include "common.h"
-#include <spdlog/sinks/basic_file_sink.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/spdlog.h>
 
 using namespace std;
 
@@ -17,14 +15,14 @@ vector<string> DirectoryScanner::scan(const string &dir)
 {
     // 遍历目录dir，获取目录里面的所有文件名
     DIR *dirp = opendir(dir.c_str());
-    assert(dirp != nullptr && "opendir failed");
+
     if (dirp == nullptr)
     {
-        spdlog::error("未找到该目录");
-        return {""};
+        LOG_ERROR("打开目录失败:{}", dir);
+        return {};
     }
 
-    spdlog::info("打开了" + dir + "目录");
+    LOG_INFO("打开目录成功:{}", dir);
 
     vector<string> filenames;
     // 读取目录流
@@ -34,10 +32,11 @@ vector<string> DirectoryScanner::scan(const string &dir)
         if (!strcmp(pdirent->d_name, ".") || !strcmp(pdirent->d_name, ".."))
             continue;
         filenames.push_back(dir + "/" + pdirent->d_name);
-        spdlog::info("访问了" + dir + "/" + pdirent->d_name);
     }
     closedir(dirp);
-    spdlog::info("关闭了" + dir + "目录");
+
+    LOG_INFO("关闭目录: {} 共扫描到 {} 个文件", dir, filenames.size());
+
     return filenames;
 }
 

@@ -151,96 +151,9 @@ CMakeFiles/main.dir/DirectoryScanner.cc.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/acs4096/cpp-search-engine/common.h /usr/include/arpa/inet.h \
- /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/sys/socket.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
- /usr/include/x86_64-linux-gnu/bits/socket.h \
- /usr/include/x86_64-linux-gnu/bits/socket_type.h \
- /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
- /usr/include/x86_64-linux-gnu/asm/socket.h \
- /usr/include/asm-generic/socket.h /usr/include/linux/posix_types.h \
- /usr/include/linux/stddef.h \
- /usr/include/x86_64-linux-gnu/asm/posix_types.h \
- /usr/include/x86_64-linux-gnu/asm/posix_types_64.h \
- /usr/include/asm-generic/posix_types.h \
- /usr/include/x86_64-linux-gnu/asm/bitsperlong.h \
- /usr/include/asm-generic/bitsperlong.h \
- /usr/include/x86_64-linux-gnu/asm/sockios.h \
- /usr/include/asm-generic/sockios.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
- /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/assert.h \
- /usr/include/dirent.h /usr/include/x86_64-linux-gnu/bits/dirent.h \
- /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
- /usr/include/x86_64-linux-gnu/bits/local_lim.h \
- /usr/include/linux/limits.h \
- /usr/include/x86_64-linux-gnu/bits/dirent_ext.h /usr/include/error.h \
- /usr/include/x86_64-linux-gnu/bits/error.h /usr/include/fcntl.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
- /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
- /usr/include/x86_64-linux-gnu/bits/struct_stat.h /usr/include/netdb.h \
- /usr/include/rpc/netdb.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/poll.h \
- /usr/include/x86_64-linux-gnu/sys/poll.h \
- /usr/include/x86_64-linux-gnu/bits/poll.h /usr/include/signal.h \
- /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
- /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
- /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
- /usr/include/x86_64-linux-gnu/bits/sigaction.h \
- /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
- /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
- /usr/include/x86_64-linux-gnu/sys/ucontext.h \
- /usr/include/x86_64-linux-gnu/bits/sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/sigstksz.h /usr/include/unistd.h \
- /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
- /usr/include/x86_64-linux-gnu/bits/environments.h \
- /usr/include/x86_64-linux-gnu/bits/confname.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/include/linux/close_range.h \
- /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/sigthread.h \
- /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
- /usr/include/c++/11/stdlib.h /usr/include/string.h \
- /usr/include/strings.h /usr/include/x86_64-linux-gnu/sys/epoll.h \
- /usr/include/x86_64-linux-gnu/bits/epoll.h \
- /usr/include/x86_64-linux-gnu/sys/ioctl.h \
- /usr/include/x86_64-linux-gnu/bits/ioctls.h \
- /usr/include/x86_64-linux-gnu/asm/ioctls.h \
- /usr/include/asm-generic/ioctls.h /usr/include/linux/ioctl.h \
- /usr/include/x86_64-linux-gnu/asm/ioctl.h \
- /usr/include/asm-generic/ioctl.h \
- /usr/include/x86_64-linux-gnu/bits/ioctl-types.h \
- /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
- /usr/include/x86_64-linux-gnu/sys/mman.h \
- /usr/include/x86_64-linux-gnu/bits/mman.h \
- /usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h \
- /usr/include/x86_64-linux-gnu/bits/mman-linux.h \
- /usr/include/x86_64-linux-gnu/bits/mman-shared.h \
- /usr/include/x86_64-linux-gnu/sys/sendfile.h \
- /usr/include/x86_64-linux-gnu/sys/stat.h \
- /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
- /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
- /usr/include/asm-generic/types.h /usr/include/asm-generic/int-ll64.h \
- /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_statx_timestamp.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h \
- /usr/include/x86_64-linux-gnu/sys/sysinfo.h /usr/include/linux/kernel.h \
- /usr/include/linux/sysinfo.h /usr/include/linux/const.h \
- /usr/include/x86_64-linux-gnu/sys/wait.h \
- /usr/include/spdlog/sinks/basic_file_sink.h \
- /usr/include/spdlog/details/file_helper.h /usr/include/spdlog/common.h \
+ /home/acs4096/cpp-search-engine/Logger.h \
+ /usr/include/spdlog/sinks/rotating_file_sink.h \
+ /usr/include/spdlog/sinks/base_sink.h /usr/include/spdlog/common.h \
  /usr/include/spdlog/tweakme.h /usr/include/spdlog/details/null_mutex.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
@@ -276,6 +189,7 @@ CMakeFiles/main.dir/DirectoryScanner.cc.o: \
  /usr/include/c++/11/bits/uniform_int_dist.h \
  /usr/include/spdlog/fmt/fmt.h /usr/include/fmt/core.h \
  /usr/include/c++/11/cstddef /usr/include/c++/11/cstring \
+ /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
  /usr/include/fmt/format.h /usr/include/c++/11/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
@@ -301,17 +215,41 @@ CMakeFiles/main.dir/DirectoryScanner.cc.o: \
  /usr/include/c++/11/tr1/riemann_zeta.tcc /usr/include/fmt/core.h \
  /usr/include/spdlog/common-inl.h /usr/include/c++/11/algorithm \
  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
- /usr/include/spdlog/details/file_helper-inl.h \
+ /usr/include/spdlog/details/log_msg.h \
+ /usr/include/spdlog/details/log_msg-inl.h \
  /usr/include/spdlog/details/os.h /usr/include/spdlog/details/os-inl.h \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
+ /usr/include/x86_64-linux-gnu/sys/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
+ /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
+ /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
+ /usr/include/asm-generic/types.h /usr/include/asm-generic/int-ll64.h \
+ /usr/include/x86_64-linux-gnu/asm/bitsperlong.h \
+ /usr/include/asm-generic/bitsperlong.h /usr/include/linux/posix_types.h \
+ /usr/include/linux/stddef.h \
+ /usr/include/x86_64-linux-gnu/asm/posix_types.h \
+ /usr/include/x86_64-linux-gnu/asm/posix_types_64.h \
+ /usr/include/asm-generic/posix_types.h \
+ /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_statx_timestamp.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h \
+ /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+ /usr/include/linux/falloc.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /usr/include/linux/close_range.h \
  /usr/include/x86_64-linux-gnu/sys/syscall.h \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /usr/include/spdlog/sinks/base_sink.h \
- /usr/include/spdlog/details/log_msg.h \
- /usr/include/spdlog/details/log_msg-inl.h \
  /usr/include/spdlog/sinks/sink.h /usr/include/spdlog/formatter.h \
  /usr/include/spdlog/sinks/sink-inl.h \
  /usr/include/spdlog/sinks/base_sink-inl.h \
@@ -320,6 +258,8 @@ CMakeFiles/main.dir/DirectoryScanner.cc.o: \
  /usr/include/spdlog/details/fmt_helper.h /usr/include/c++/11/mutex \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
+ /usr/include/spdlog/details/file_helper.h \
+ /usr/include/spdlog/details/file_helper-inl.h \
  /usr/include/spdlog/details/synchronous_factory.h \
  /usr/include/spdlog/details/registry.h \
  /usr/include/spdlog/details/registry-inl.h \
@@ -330,13 +270,75 @@ CMakeFiles/main.dir/DirectoryScanner.cc.o: \
  /usr/include/spdlog/details/log_msg_buffer.h \
  /usr/include/spdlog/details/log_msg_buffer-inl.h \
  /usr/include/spdlog/details/circular_q.h /usr/include/c++/11/cassert \
- /usr/include/spdlog/details/backtracer-inl.h \
+ /usr/include/assert.h /usr/include/spdlog/details/backtracer-inl.h \
  /usr/include/spdlog/logger-inl.h \
  /usr/include/spdlog/sinks/ansicolor_sink.h \
  /usr/include/spdlog/details/console_globals.h \
  /usr/include/spdlog/sinks/ansicolor_sink-inl.h \
- /usr/include/spdlog/sinks/basic_file_sink-inl.h \
+ /usr/include/spdlog/sinks/rotating_file_sink-inl.h \
  /usr/include/spdlog/sinks/stdout_color_sinks.h \
  /usr/include/spdlog/sinks/stdout_color_sinks-inl.h \
  /usr/include/spdlog/spdlog.h /usr/include/spdlog/version.h \
- /usr/include/spdlog/spdlog-inl.h
+ /usr/include/spdlog/spdlog-inl.h \
+ /home/acs4096/cpp-search-engine/common.h /usr/include/arpa/inet.h \
+ /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/dirent.h \
+ /usr/include/x86_64-linux-gnu/bits/dirent.h \
+ /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/dirent_ext.h /usr/include/error.h \
+ /usr/include/x86_64-linux-gnu/bits/error.h /usr/include/netdb.h \
+ /usr/include/rpc/netdb.h \
+ /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/poll.h \
+ /usr/include/x86_64-linux-gnu/sys/poll.h \
+ /usr/include/x86_64-linux-gnu/bits/poll.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
+ /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
+ /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
+ /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
+ /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
+ /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+ /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+ /usr/include/c++/11/stdlib.h /usr/include/x86_64-linux-gnu/sys/epoll.h \
+ /usr/include/x86_64-linux-gnu/bits/epoll.h \
+ /usr/include/x86_64-linux-gnu/sys/ioctl.h \
+ /usr/include/x86_64-linux-gnu/bits/ioctls.h \
+ /usr/include/x86_64-linux-gnu/asm/ioctls.h \
+ /usr/include/asm-generic/ioctls.h /usr/include/linux/ioctl.h \
+ /usr/include/x86_64-linux-gnu/asm/ioctl.h \
+ /usr/include/asm-generic/ioctl.h \
+ /usr/include/x86_64-linux-gnu/bits/ioctl-types.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
+ /usr/include/x86_64-linux-gnu/sys/mman.h \
+ /usr/include/x86_64-linux-gnu/bits/mman.h \
+ /usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h \
+ /usr/include/x86_64-linux-gnu/bits/mman-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/mman-shared.h \
+ /usr/include/x86_64-linux-gnu/sys/sendfile.h \
+ /usr/include/x86_64-linux-gnu/sys/sysinfo.h /usr/include/linux/kernel.h \
+ /usr/include/linux/sysinfo.h /usr/include/linux/const.h \
+ /usr/include/x86_64-linux-gnu/sys/wait.h

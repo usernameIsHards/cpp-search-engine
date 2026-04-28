@@ -1,0 +1,347 @@
+[2026-04-28 14:00:34] [info] ✅ spdlog 日志初始化完成！
+[2026-04-28 14:00:34] [info] 项目开始运行
+[2026-04-28 14:00:35] [info] 打开了./data/stopwords/目录
+[2026-04-28 14:00:35] [info] 访问了./data/stopwords//cn_stopwords.txt
+[2026-04-28 14:00:35] [info] 访问了./data/stopwords//en_stopwords.txt
+[2026-04-28 14:00:35] [info] 关闭了./data/stopwords/目录
+[2026-04-28 14:00:35] [info] 打开了./data/corpus/EN/目录
+[2026-04-28 14:00:35] [info] 访问了./data/corpus/EN//english.txt
+[2026-04-28 14:00:35] [info] 访问了./data/corpus/EN//index.dat
+[2026-04-28 14:00:35] [info] 访问了./data/corpus/EN//The_Holy_Bible.txt
+[2026-04-28 14:00:35] [info] 关闭了./data/corpus/EN/目录
+[2026-04-28 14:00:37] [info] 打开了./data/corpus/CN/目录
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0041.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0025.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0039.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0029.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0033.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0045.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0003.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0005.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0021.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0035.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0009.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0037.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0023.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0015.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0031.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0027.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0011.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0043.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0013.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0019.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0002.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0007.txt
+[2026-04-28 14:00:37] [info] 访问了./data/corpus/CN//C3-Art0017.txt
+[2026-04-28 14:00:37] [info] 关闭了./data/corpus/CN/目录
+[2026-04-28 14:55:59] [info] ✅ spdlog 日志初始化完成！
+[2026-04-28 14:55:59] [info] 项目开始运行
+[2026-04-28 14:56:01] [info] 初始化KeyWordProcessor
+[2026-04-28 14:56:01] [info] 打开目录成功:./data/stopwords/
+[2026-04-28 14:56:01] [info] 关闭目录: ./data/stopwords/ 共扫描到 2 个文件
+[2026-04-28 14:56:01] [info] 扫描到2个停用词文件
+[2026-04-28 14:56:01] [info] 停用词加载完成 中文:505个 英文:816个
+[2026-04-28 14:56:01] [info] 开始构建索引
+[2026-04-28 14:56:01] [info] 构建英文词典库
+[2026-04-28 14:56:01] [info] 创建英文词典库:./outfile/dict_en.dat
+[2026-04-28 14:56:01] [info] 打开目录成功:./data/corpus/EN/
+[2026-04-28 14:56:01] [info] 关闭目录: ./data/corpus/EN/ 共扫描到 3 个文件
+[2026-04-28 14:56:01] [info] 英文语料库文件数量:3
+[2026-04-28 14:56:02] [info] 英文词典完成 处理文件:3 个 共 41817 个词
+[2026-04-28 14:56:02] [info] 构建英文索引库
+[2026-04-28 14:56:02] [info] 构建英文索引:./outfile/dict_en.dat
+[2026-04-28 14:56:03] [info] 英文索引完成 共 41817 行
+[2026-04-28 14:56:03] [info] 构建中文词典库
+[2026-04-28 14:56:03] [info] 创建中文词典: ./outfile/dict_ch.dat
+[2026-04-28 14:56:03] [info] 打开目录成功:./data/corpus/CN/
+[2026-04-28 14:56:03] [info] 关闭目录: ./data/corpus/CN/ 共扫描到 23 个文件
+[2026-04-28 14:56:03] [info] 中文语料库文件数量: 23
+[2026-04-28 14:56:03] [info] 中文词典完成 处理文件:23 个 共 15685 个词
+[2026-04-28 14:56:03] [info] 构建中文索引库
+[2026-04-28 14:56:03] [info] 构建中文索引: ./outfile/dict_ch.dat
+[2026-04-28 14:56:03] [info]  中文索引完成 共 2901 个字符
+[2026-04-28 14:56:03] [info] 索引构建完成
+[2026-04-28 14:56:03] [info] 项目结束运行
+[2026-04-28 16:38:40] [info    ] ✅ 日志初始化完成 -> logs/search.log
+[2026-04-28 16:38:42] [info    ] 解析./data/corpus/webpages下xml文件
+[2026-04-28 16:38:42] [info    ] 打开目录成功:./data/corpus/webpages
+[2026-04-28 16:38:42] [info    ] 关闭目录: ./data/corpus/webpages 共扫描到 37 个文件
+[2026-04-28 16:38:42] [info    ] 扫描到37个xml文件
+[2026-04-28 16:38:43] [warning ] item 无 content 和 description，跳过: title=浙江龙游红木小镇：红木文化见精神
+[2026-04-28 16:38:43] [info    ] 总共解析:99条记录
+[2026-04-28 16:38:43] [info    ] 总共解析:114条记录
+[2026-04-28 16:38:43] [info    ] 总共解析:214条记录
+[2026-04-28 16:38:43] [info    ] 总共解析:314条记录
+[2026-04-28 16:38:43] [info    ] 总共解析:414条记录
+[2026-04-28 16:38:44] [info    ] 总共解析:514条记录
+[2026-04-28 16:38:44] [info    ] 总共解析:614条记录
+[2026-04-28 16:38:44] [info    ] 总共解析:714条记录
+[2026-04-28 16:38:44] [info    ] 总共解析:814条记录
+[2026-04-28 16:38:44] [warning ] item 无 content 和 description，跳过: title=一图看懂2020年中央企业经济运行“成绩单”
+[2026-04-28 16:38:45] [info    ] 总共解析:913条记录
+[2026-04-28 16:38:45] [info    ] 总共解析:1013条记录
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=名校投放新专业抢北京优质生源
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=人才管理，如何摒弃“官本位”
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京普通初中校毕业生将有更多机会读优质高中
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=国家发改委：教材价格并非“一放了之”
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=百万学子网上祭英烈
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=2016年重点高校将定向招收6万名农村和贫困地区学生
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=“80后”“90后”在葬礼司仪的岗位上体验百味人生
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=话剧《雨花台》在北大上演 将在全国高校巡演百场
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=常年大量游客进入 大学校园对外开放遇"花季难题"
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=风筝蛋画诗歌：三省四地小学生“网络课堂”话清明
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京理工大学优势专业今年增加在京招生计划
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=人大附中通州校区招百名教职工
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=EMBA，明年全国统考
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=中小学教材定价权下放
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=甘肃省9.18亿元学前教育补助金陆续发放
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=2016“寻找中国好校长”公益活动启动
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=有一种胖是奶奶“干的”：14岁男孩体重300斤被迫休学
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=近4万贫困孤独症儿童接受康复救助
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=五地大学生助力脱贫
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=中法千人实习生计划启动
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=发展专业社工，让留守儿童不再孤单
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=上海市首批高校创业指导站成立
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京市教委：“死档”中考生将不能获得学籍
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京中招考后知分报志愿 “老经验”不管用了
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京2016中招：部分郊区校“逆袭” 可招城区学生
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京2016中招新政：首次实行考后知分填报志愿
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=法语文化周嗨翻校园
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北化“高精尖中心”聘用7位世界名校教授
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=高校招收贫困生的专项计划都招谁　教育部发文明确
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=2016年新设239个国家控制的高职专业点
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=教育部促高校毕业生精准就业 严防“试用期陷阱”
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=人大附中通州校区将于9月开学
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=贫困地区定向招生国家专项计划今年扩招1万人
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=教育部：近期一些社会人员伤害学生事件令人震惊
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=熊孩子一天花万元买迪士尼门票：请全班同学去
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=十余省份公布高考改革方案 多地突出学生自主选择权
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=两岸5所交通大学共创文化发展基金
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=天津大学博士招生全面实施“申请—审核”制 考核多元
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=甘肃：高校教师岗位业绩突出者可直接申报教授
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=郑继伟：要为大学生搭建更多创新创业教育的平台
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=教育部：“不合格”学位授权点存在师资不足等问题
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=高校：主动放弃学位授权点是为了“握拳发展”
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=带母上学男生捐造血干细胞 不谈奉献只说感恩
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=北京今年6万人报名高考 明年启动高考改革
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=首届中以大学校长论坛在以色列举行
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=英国争论小学要不要考试
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=禁止在职教师有偿在线授课？教育部：尚在研究中
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=五所交大联合创办“交通大学文化发展基金”
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=南京中考体育统考即将启动
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=广药换上新校牌
+[2026-04-28 16:38:45] [info    ] 总共解析:1013条记录
+[2026-04-28 16:38:45] [info    ] 总共解析:1113条记录
+[2026-04-28 16:38:45] [warning ] item 无 content 和 description，跳过: title=健康饮食需要健康烹调！专家一图教你健康烹调方法
+[2026-04-28 16:38:45] [info    ] 总共解析:1212条记录
+[2026-04-28 16:38:45] [info    ] 总共解析:1312条记录
+[2026-04-28 16:38:46] [info    ] 总共解析:1412条记录
+[2026-04-28 16:38:46] [warning ] item 无 content 和 description，跳过: title=图解：孩子就地过年，这些事要怎么办？
+[2026-04-28 16:38:46] [info    ] 总共解析:1511条记录
+[2026-04-28 16:38:46] [warning ] item 无 content 和 description，跳过: title=格力向全国各地捐赠物资积极抗“疫”
+[2026-04-28 16:38:46] [info    ] 总共解析:1610条记录
+[2026-04-28 16:38:46] [info    ] 总共解析:1710条记录
+[2026-04-28 16:38:47] [warning ] item 无 content 和 description，跳过: title=图解：携号转网人数破千万！如何少走弯路？
+[2026-04-28 16:38:47] [info    ] 总共解析:1809条记录
+[2026-04-28 16:38:47] [warning ] item 无 content 和 description，跳过: title=中国文化主题：如何用数字艺术表现概念设计的奇幻内容
+[2026-04-28 16:38:47] [info    ] 总共解析:1908条记录
+[2026-04-28 16:38:47] [info    ] 总共解析:2008条记录
+[2026-04-28 16:38:47] [info    ] 总共解析:2108条记录
+[2026-04-28 16:38:48] [warning ] item 无 content 和 description，跳过: title=减免社保如何申请？一图看懂大中小微企业划分！
+[2026-04-28 16:38:48] [warning ] item 无 content 和 description，跳过: title=图解：从统计公报看2019经济社会全景
+[2026-04-28 16:38:49] [info    ] 总共解析:2606条记录
+[2026-04-28 16:38:49] [info    ] 总共解析:2706条记录
+[2026-04-28 16:38:49] [info    ] 总共解析:2806条记录
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=【中国有约】《丝路秀》——沉浸式新疆歌舞视听盛宴
+[2026-04-28 16:38:50] [info    ] 总共解析:2905条记录
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=百集文献纪录片《山河岁月》将开播
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=【奋斗百年路 启航新征程·今日中国】奋力实现辽宁振兴新发展
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=【奋斗百年路 启航新征程·文明城市谱新篇】北京东城：崇文争先 老城复兴换新颜
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=李克强同意大利总理通电话
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=【大湾区 大未来】从“世界工厂”走向“世界湾区”
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=奋斗百年路 启航新征程·数风流人物
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=【新思想引领新征程·红色足迹】从上海到嘉兴 重访启航路奋进新征程
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=2分钟看天问一号着陆火星
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=习近平《在全国脱贫攻坚总结表彰大会上的讲话》英文单行本出版发行
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=奋斗百年路 启航新征程·数风流人物
+[2026-04-28 16:38:50] [warning ] item 无 content 和 description，跳过: title=【奋斗百年路 启航新征程·今日中国】生态优先 内蒙古绘就高质量发展新篇章
+[2026-04-28 16:38:50] [info    ] 总共解析:2994条记录
+[2026-04-28 16:38:50] [info    ] 总共解析:3094条记录
+[2026-04-28 16:38:50] [info    ] 总共解析:3194条记录
+[2026-04-28 16:38:51] [warning ] item 无 content 和 description，跳过: title=一张图了解2020游戏责任论坛
+[2026-04-28 16:38:51] [info    ] 总共解析:3293条记录
+[2026-04-28 16:38:51] [warning ] item 无 content 和 description，跳过: title=我和我的祖国（闵行开发区版）
+[2026-04-28 16:38:51] [warning ] item 无 content 和 description，跳过: title=闵行开发区示范园区
+[2026-04-28 16:38:51] [info    ] 总共解析:3391条记录
+[2026-04-28 16:38:51] [info    ] 总共解析:3491条记录
+[2026-04-28 16:38:51] [info    ] 总共解析:3591条记录
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=《食点药闻》改版啦！快跟我们一起闯荡江湖吧！
+[2026-04-28 16:38:52] [info    ] 总共解析:3690条记录
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2021年4月份国民经济运行情况答记者问
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：消费市场总体复苏态势持续
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：固定资产投资稳定恢复 高技术产业投资增速较快
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：工业生产延续稳定恢复态势
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：4月份商品住宅销售价格涨幅稳中略升
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=国家统计局副局长李晓超就人口普查数据及网友关注热点接受澎湃新闻专访
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=我国人口发展呈现新特点与新趋势
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=第七次全国人口普查公报解读
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2021年4月份CPI总体平稳 PPI环比涨幅回落
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=盛来运：全面客观看待当前经济形势
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：文化企业营业收入恢复性增长 文化新业态发展势头持续强劲
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：4月份中国采购经理指数保持在扩张区间 高于近两年同期水平
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：一季度工业企业利润延续较快恢复态势
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2021年一季度国民经济运行情况答记者问
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：3月份商品住宅销售价格环比涨幅基本稳定 同比涨幅继续上升
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2021年3月份CPI同比由降转涨 PPI涨幅扩大 价格总体稳定
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：3月份中国制造业采购经理指数和非制造业商务活动指数双双回升
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：1—2月工业企业利润加快恢复
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：1—2月份消费市场恢复性增长
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：投资增速恢复性反弹 投资结构持续性优化
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：工业生产继续加快 稳定恢复态势延续
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2021年1-2月份国民经济运行情况答记者问
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2月份商品住宅销售价格环比涨幅有升有降 同比涨幅有所上升
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=中国政府网：200秒速看总理记者会（精华版）
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2021年2月份CPI和PPI环比涨幅均有所回落
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=中国政府网：最全！一图读懂2021年《政府工作报告》
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=中国政府网：2021年全国两会专题
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=中国政府网直播：十三届全国人大四次会议开幕会举行 习近平等党和国家领导人出席
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2月份中国采购经理指数继续保持在景气区间
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=盛来运：不平凡之年书写非凡答卷 ——《2020年国民经济和社会发展统计公报》评读
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2021年1月份房地产市场运行总体平稳
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=国家统计局城市司负责人就价格指数基期轮换接受中国信息报专访
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2021年1月份CPI和PPI环比继续上涨 同比一跌一涨
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：文化企业营业收入增速由负转正 新业态保持快速增长
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：1月份中国采购经理指数保持在扩张区间
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2020年工业利润实现增长 质量效益稳步提升
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=国家统计局局长就2020年全年国民经济运行情况答记者问
+[2026-04-28 16:38:52] [warning ] item 无 content 和 description，跳过: title=解读：2020年12月份商品住宅销售价格稳中略涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年12月份CPI同比由降转涨 PPI同比降幅收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：12月份制造业采购经理指数和非制造业商务活动指数稳中有缓
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业企业利润持续稳定恢复
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年全国棉花产量持平略增
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年11月份国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：市场销售稳定回升 消费结构持续优化
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：投资增速稳步回升 民间投资增速由负转正
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业生产稳中有升 工业出口明显加快
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：11月份商品住宅销售价格涨幅稳中有落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年全国粮食生产再获丰收
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年11月份CPI同比下降 PPI同比降幅收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：11月份制造业采购经理指数和非制造业商务活动指数双双上升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业企业累计利润增长实现由负转正
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年10月份国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：消费需求逐步回暖 市场销售持续上升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：投资保持稳步回升态势
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业生产平稳增长 累计增速继续回升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：10月份商品住宅销售价格涨幅平稳回落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年10月份CPI同比涨幅继续回落 PPI同比降幅与上月相同
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：10月份制造业采购经理指数与上月基本持平 连续八个月处于扩张区间 非制造业商务活动指数连续三个月回升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2019年中国创新指数持续提升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：文化企业营业收入降幅收窄到0.6% 文化新业态保持快速增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业企业利润逐季回升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=王有捐：前三季度CPI同比涨幅回落 PPI降幅收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=方晓丹：居民收入实际增速由负转正 居民消费支出稳定恢复
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=张毅：就业形势总体稳定 调查失业率有所回落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=董礼华：消费市场持续稳定复苏 季度增速年内首次转正
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=彭永涛：投资增速由负转正 保持逐步回升态势
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=杜希双：服务业稳步恢复 新动能快速发展
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=刘文华：能源结构持续优化 能耗强度升幅回落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=卢山：工业生产稳定恢复 增长动力不断加强
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=李锁强：全年粮食生产有望再获丰收 生猪生产稳步恢复
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=赵同录：前三季度经济运行稳定恢复 增速由负转正
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：9月份商品住宅销售价格涨幅略有回落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年前三季度国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年9月份CPI、PPI环比涨幅继续回落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：9月份制造业采购经理指数与非制造业商务活动指数双双回升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=疫情冲击下的中国就业市场：短期波动与长期展望
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=李晓超：关于我国调查失业率统计的几个问题
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：8月份工业利润稳定增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：8月份社会消费品零售总额增速年内首次转正
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：投资继续保持恢复态势
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业生产继续恢复 累计增速由负转正
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年8月份国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：8月份商品住宅销售价格稳中略涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年8月份CPI涨幅略有回落 PPI同比降幅继续收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：8月份制造业采购经理指数走势平稳 非制造业商务活动指数有所上升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：科技经费投入实现新突破 财政科技支出保持较快增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：7月份工业利润增速持续加快
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年我国早稻产量2729万吨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：7月份商品零售实现增长 餐饮收入持续好转
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：固定资产投资回升势头继续巩固
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业生产平稳增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年7月份国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：7月份商品住宅销售价格环比涨幅回落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=2019年分省（区、市）万元地区生产总值能耗降低率等指标公报
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年7月份CPI同比涨幅略有扩大 PPI同比降幅继续收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=张军：从民生指标国际比较看全面建成小康社会成就
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=万东华：从社会发展看全面建成小康社会成就
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=【图解】人口普查，一次跨越67年时光的旅行
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：文化企业营业收入降幅明显收窄 “互联网+文化”持续增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：7月份制造业采购经理指数和非制造业商务活动指数继续保持在临界点以上
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=方晓丹：从居民收支看全面建成小康社会成就
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：6月份工业利润增速继续加快 二季度增速实现由降转升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年上半年国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：6月份商品住宅销售价格微涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：我国夏粮生产再获丰收 产量增加120.8万吨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2019年我国经济发展新动能指数继续上升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年6月份CPI环比略有下降 PPI环比由降转涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：6月份制造业采购经理指数和非制造业商务活动指数稳中有升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：5月份工业企业利润实现增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人付凌晖就2020年5月份国民经济运行情况回答媒体关注的问题
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：消费市场持续改善
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：固定资产投资降幅持续收窄 高技术产业、农业和社会领域投资增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业生产稳定回升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：5月份商品住宅销售价格环比略有上涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=关于调整5月份国民经济运行情况发布方式的公告
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年5月份CPI同比涨幅继续回落 PPI环比降幅收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国务院第七次全国人口普查领导小组办公室负责人就《全国人口普查条例》施行10周年答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=李实：提高居民收入水平任重而道远
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=李花菊：社会总资产不等于家庭总财富
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：5月份制造业采购经理指数小幅回落但仍在荣枯线上
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：4月份工业企业利润明显改善
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=许宪春：中国仍为世界最大的发展中国家——从购买力平价法视角评析
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=中国统计学会相关负责人就全球2017年轮ICP结果接受《中国信息报》记者采访
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：4月份商品住宅销售价格稳中略涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：工业生产继续恢复
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：1-4月份全国固定资产投资降幅继续收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：4月份市场销售继续好转
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2019年城镇单位就业人员平均工资保持稳定增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年4月份国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年4月份CPI涨幅继续回落 PPI降幅扩大
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国务院第七次全国人口普查领导小组办公室负责人就全国人口普查综合试点工作答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=方晓丹：一季度贫困地区农村居民名义收入保持增长
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：一季度规模以上文化及相关产业企业营业收入下降 “互联网+文化”逆势上行
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：4月份制造业采购经理指数和非制造业商务活动指数一降一升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：3月份工业企业利润降幅收窄
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=盛来运：坚定信心看大势 底线思维迎挑战
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=付凌晖：对一季度部分指标变化的几点看法
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年一季度国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年3月份商品住宅销售价格总体稳定
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年3月份CPI涨幅回落 PPI降幅有所扩大
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局服务业调查中心负责人就3月份采购经理指数明显回升有关问题答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：企业复工复产明显加快 3月份采购经理指数在2月份大幅下降基数上环比回升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：1—2月份工业企业利润受疫情影响明显下降
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=蔺涛：疫情对零售市场短期冲击大 消费长期向好趋势没有改变
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=张毅：疫情冲击下失业率上升 统筹政策实施将带动就业形势改善
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=张卫华：工业生产受疫情影响明显下降 医疗生活物资和基础行业保障有力
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=彭永涛：疫情对固定资产投资冲击明显 投资随复工复产有望企稳向好
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=国家统计局新闻发言人就2020年1-2月份国民经济运行情况答记者问
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年2月份商品住宅销售价格涨幅稳中有落
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年2月份CPI继续上涨但涨幅有所回落 PPI稳中略降
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=减免社保如何申请？一图看懂大中小微企业划分！
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=图解：从统计公报看2019经济社会全景
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：受疫情冲击2月份采购经理指数明显回落 当前企业复工率回升较快 将推动3月份采购经理指数上升
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=盛来运：稳中上台阶 进中增福祉——《2019年统计公报》评读
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年1月份商品住宅销售价格涨幅保持总体稳定
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2019年规模以上文化及相关产业企业营业收入平稳增长 结构持续优化
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2020年1月份CPI涨幅扩大 PPI稳中略涨
+[2026-04-28 16:38:53] [warning ] item 无 content 和 description，跳过: title=解读：2019年工业利润有所下降 效益状况结构性改善
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=解读：2020年1月制造业采购经理指数位于临界点 非制造业商务活动指数保持扩张
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=方晓丹：2019年全国农村贫困人口减少1109万人
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=文兼武：我国信息技术产业蓬勃发展，动力强劲
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=邢志宏：服务业在新时代改革开放中迈向高质量发展
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=曾玉平：我国法人单位数量进入快速增长期
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=《人民日报》发表宁吉喆署名文章：中国经济再写新篇章（经济形势理性看）
+[2026-04-28 16:38:54] [info    ] 总共解析:4026条记录
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=做大做强数字经济，习近平强调打通这条“大动脉”
+[2026-04-28 16:38:54] [warning ] item 无 content 和 description，跳过: title=学习进行时丨习近平谋划网信事业，处处“以人民为中心”
+[2026-04-28 16:38:54] [info    ] 总共解析:4124条记录

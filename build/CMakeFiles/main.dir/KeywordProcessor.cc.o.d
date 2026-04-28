@@ -243,8 +243,9 @@ CMakeFiles/main.dir/KeywordProcessor.cc.o: \
  /usr/local/include/utfcpp/utf8/cpp11.h \
  /usr/local/include/utfcpp/utf8/checked.h \
  /usr/local/include/utfcpp/utf8/unchecked.h \
- /usr/include/spdlog/sinks/basic_file_sink.h \
- /usr/include/spdlog/details/file_helper.h /usr/include/spdlog/common.h \
+ /home/acs4096/cpp-search-engine/Logger.h \
+ /usr/include/spdlog/sinks/rotating_file_sink.h \
+ /usr/include/spdlog/sinks/base_sink.h /usr/include/spdlog/common.h \
  /usr/include/spdlog/tweakme.h /usr/include/spdlog/details/null_mutex.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
@@ -262,7 +263,8 @@ CMakeFiles/main.dir/KeywordProcessor.cc.o: \
  /usr/include/spdlog/fmt/fmt.h /usr/include/fmt/core.h \
  /usr/include/c++/11/cstddef /usr/include/fmt/format.h \
  /usr/include/fmt/core.h /usr/include/spdlog/common-inl.h \
- /usr/include/spdlog/details/file_helper-inl.h \
+ /usr/include/spdlog/details/log_msg.h \
+ /usr/include/spdlog/details/log_msg-inl.h \
  /usr/include/spdlog/details/os.h /usr/include/spdlog/details/os-inl.h \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
@@ -296,9 +298,6 @@ CMakeFiles/main.dir/KeywordProcessor.cc.o: \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /usr/include/spdlog/sinks/base_sink.h \
- /usr/include/spdlog/details/log_msg.h \
- /usr/include/spdlog/details/log_msg-inl.h \
  /usr/include/spdlog/sinks/sink.h /usr/include/spdlog/formatter.h \
  /usr/include/spdlog/sinks/sink-inl.h \
  /usr/include/spdlog/sinks/base_sink-inl.h \
@@ -307,6 +306,8 @@ CMakeFiles/main.dir/KeywordProcessor.cc.o: \
  /usr/include/spdlog/details/fmt_helper.h /usr/include/c++/11/mutex \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
+ /usr/include/spdlog/details/file_helper.h \
+ /usr/include/spdlog/details/file_helper-inl.h \
  /usr/include/spdlog/details/synchronous_factory.h \
  /usr/include/spdlog/details/registry.h \
  /usr/include/spdlog/details/registry-inl.h \
@@ -322,7 +323,7 @@ CMakeFiles/main.dir/KeywordProcessor.cc.o: \
  /usr/include/spdlog/sinks/ansicolor_sink.h \
  /usr/include/spdlog/details/console_globals.h \
  /usr/include/spdlog/sinks/ansicolor_sink-inl.h \
- /usr/include/spdlog/sinks/basic_file_sink-inl.h \
+ /usr/include/spdlog/sinks/rotating_file_sink-inl.h \
  /usr/include/spdlog/sinks/stdout_color_sinks.h \
  /usr/include/spdlog/sinks/stdout_color_sinks-inl.h \
  /usr/include/spdlog/spdlog.h /usr/include/spdlog/version.h \
