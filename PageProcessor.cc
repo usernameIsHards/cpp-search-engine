@@ -259,6 +259,7 @@ extern string filterWord_ch(const string &word);
 // 构建网页库和网页偏移库
 void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
 {
+
     LOG_INFO("========== 构建网页库 ==========");
     XMLDocument doc;
     XMLElement *root = doc.NewElement("rss");

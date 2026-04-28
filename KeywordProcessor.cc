@@ -5,7 +5,6 @@
 #include <map>
 #include <ostream>
 #include <set>
-#include <utfcpp/utf8.h>
 
 #include "Logger.h"
 
@@ -107,7 +106,7 @@ void KeyWordProcessor::create_cn_dict(const std::string &dir, const std::string 
 {
     LOG_INFO("创建中文词典: {}", dict_dir + outfile);
 
-    ofstream ofs(dict_ch + outfile);
+    ofstream ofs(dict_dir + outfile);
 
     if (!ofs.is_open())
     {
