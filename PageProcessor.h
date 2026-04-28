@@ -10,7 +10,7 @@
 class PageProcessor
 {
   public:
-    PageProcessor() = default;
+    PageProcessor();
     void process(const std::string &dir);
 
   private:
@@ -41,5 +41,5 @@ class PageProcessor
     simhash::Simhasher hasher_;
     std::set<std::string> stopWords_; // 方便查找
     std::vector<Document> documents_;
-    std::map<std::string, std::map<int, double>> invertedIndex_;
+    std::unordered_map<std::string, std::vector<std::pair<int, double>>> invertedIndex_;
 };
