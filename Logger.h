@@ -24,7 +24,7 @@ inline void initLogger()
     auto logger = std::make_shared<spdlog::logger>("default", spdlog::sinks_init_list{console_sink, file_sink});
 
     logger->set_level(spdlog::level::debug); // logger 本身放行所有级别
-    logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%^%-8l%$] %v");
+    logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%^%l%$] %v");
     spdlog::flush_on(spdlog::level::warn); // warn 以上立即刷入文件
 
     spdlog::set_default_logger(logger);

@@ -1,9 +1,10 @@
 #include "PageProcessor.h"
 #include "DirectoryScanner.h"
+#include "KeywordProcessor.h"
 #include "Logger.h"
 #include <regex>
+#include <set>
 #include <tinyxml2.h>
-
 using namespace std;
 using namespace tinyxml2;
 // PageProcessor::PageProcessor()
@@ -13,6 +14,9 @@ using namespace tinyxml2;
 void PageProcessor::process(const string &dir)
 {
     extract_documents(dir);
+    deduplicate_documents();
+
+    build_pages_and_offsets("./outfile/webPage.dat", "");
 }
 
 // 解码HTML实体
@@ -156,17 +160,68 @@ void PageProcessor::extract_documents(const string &dir)
     //     return;
     // }
 }
+int hamming_distance(uint64_t x, uint64_t y)
+{
+    int distance = 0;
+    uint64_t z = x ^ y;
+    while (z)
+    {
+        z &= (z - 1);
+        distance++;
+    }
+    return distance;
+}
 
 // 依据SimHash算法对documents_去重
 void PageProcessor::deduplicate_documents()
 {
+    LOG_INFO("========== 开始 SimHash 去重 ==========");
+    LOG_INFO("去重前文档数量: {}", documents_.size());
+    vector<Document> new_docs; // 用于存储新文档  考虑到迭代器失效问题  所以只能这样做
+    set<uint64_t> hashs;
+    for (auto &doc : documents_)
+    {
+        //  title + content 拼接分词
+        uint64_t hash;
+        string text = doc.title + " " + doc.content;
+        bool is_similar = false;
+        hasher_.make(text, 6, hash);
+        // 从集合找相似的
+        for (auto h : hashs)
+        {
+            if (hamming_distance(h, hash) <= 3)
+            {
+                is_similar = true;
+                break;
+            }
+        }
+        if (is_similar) // 如果相似就跳过
+        {
+            continue;
+        }
+
+        // 不相似
+        doc.id = new_docs.size() + 1;
+        new_docs.push_back(doc);
+        hashs.emplace(hash);
+    }
+    documents_ = std::move(new_docs);
+
+    LOG_INFO("去重后文档数量: {}", documents_.size());
+    LOG_INFO("========== SimHash 去重结束 ==========");
+}
+
+// 构建网页库和网页偏移库
+void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
+{
+    LOG_INFO("========== 构建网页库 ==========");
     XMLDocument doc;
     XMLElement *root = doc.NewElement("rss");
     doc.InsertEndChild(root);
 
     for (const auto &document : documents_)
     {
-        XMLElement *item = doc.NewElement("item");
+        XMLElement *item = doc.NewElement("doc");
         root->InsertEndChild(item);
 
         XMLElement *id = doc.NewElement("id");
@@ -194,13 +249,34 @@ void PageProcessor::deduplicate_documents()
             item->InsertEndChild(content);
         }
     }
+    XMLError eResult = doc.SaveFile(pages.c_str());
+    if (eResult != XML_SUCCESS)
+    {
+        LOG_ERROR("./outfile/webPage.dat 保存失败");
+        return;
+    }
+    LOG_INFO("========== 构建网页库已完成 ==========");
+
+    LOG_INFO("========== 构建网页偏移库 ==========");
+
+    ofstream ofs(offsets);
+
+    if (!ofs.is_open())
+    {
+        LOG_ERROR("创建网页偏移库失败{}", offsets);
+        return;
+    }
+
+    int page_fd = open(pages.c_str(), O_RDONLY);
+
+    if (page_fd == -1)
+    {
+        LOG_ERROR("打开网页库失败{}", pages);
+        return;
+    }
 
     
-}
 
-// 构建网页库和网页偏移库
-void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
-{
 }
 
 // 构建倒排索引库
