@@ -495,6 +495,7 @@ void PageProcessor::build_inverted_index(const string &filename)
     LOG_INFO("========== 构建倒排索引库完成 ==========");
 }
 
+#ifdef TESTPAGE
 int main()
 {
     initLogger();
@@ -505,3 +506,4 @@ int main()
 
     return 0;
 }
+#endif

@@ -7,6 +7,7 @@
 #include <set>
 
 #include "Logger.h"
+#include <utfcpp/utf8.h>
 
 using namespace std;
 const string &EN_dir = "./data/corpus/EN/";

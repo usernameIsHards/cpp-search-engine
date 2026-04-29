@@ -10,26 +10,26 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../)
 add_executable(main
    DirectoryScanner.cc
    KeywordProcessor.cc
-   main.cc
+   server.cc
 
 )
 
-target_compile_options(main PRIVATE
+target_compile_options(server PRIVATE
    # -fno-rtti
    -frtti
     -g
 )
 
-target_include_directories(main PRIVATE
+target_include_directories(server PRIVATE
     /usr/local/include
 )
 
-target_link_directories(main PRIVATE
+target_link_directories(server PRIVATE
     /usr/local/lib
 )
 
 
-target_link_libraries(main PRIVATE
+target_link_libraries(server PRIVATE
     spdlog
     fmt   
     
