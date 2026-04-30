@@ -35,6 +35,8 @@ PageProcessor::PageProcessor() : tokenizer_()
             // 中文
             while (getline(ifs, word))
             {
+                if (!word.empty() && word.back() == '\r')
+                    word.pop_back();
                 stopWords_.emplace(word);
             }
         }
@@ -43,6 +45,8 @@ PageProcessor::PageProcessor() : tokenizer_()
             // 英文
             while (getline(ifs, word))
             {
+                if (!word.empty() && word.back() == '\r')
+                    word.pop_back();
                 stopWords_.emplace(word);
             }
         }
@@ -92,22 +96,25 @@ string decodeHtmlEntities(const string &str)
 static string clearHtmlTag(const string &str)
 {
     if (str.empty())
-    {
         return "";
-    }
-    // 第一步：去除HTML标签
+
+    // 先整块删除 <script>...</script>
+    regex scriptReg("<script[^>]*>[\\s\\S]*?</script>", regex_constants::icase);
+    string res = regex_replace(str, scriptReg, "");
+
+    // 再删除 <style>...</style>（同理）
+    regex styleReg("<style[^>]*>[\\s\\S]*?</style>", regex_constants::icase);
+    res = regex_replace(res, styleReg, "");
+
+    // 去除剩余 HTML 标签
     regex htmlReg("<[^>]+>");
+    res = regex_replace(res, htmlReg, "");
 
-    string res = regex_replace(str, htmlReg, "");
-
-    //  第二步：解码HTML实体
     res = decodeHtmlEntities(res);
 
-    //  第三步：去除多余空白
     regex spaceReg("\\s+");
     res = regex_replace(res, spaceReg, " ");
 
-    //  去掉首尾空格
     size_t start = res.find_first_not_of(" ");
     size_t end = res.find_last_not_of(" ");
     if (start == string::npos)
@@ -257,6 +264,7 @@ void PageProcessor::deduplicate_documents()
 extern string filterWord_ch(const string &word);
 
 // 构建网页库和网页偏移库
+#if 0
 void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
 {
 
@@ -359,6 +367,47 @@ void PageProcessor::build_pages_and_offsets(const string &pages, const string &o
     LOG_INFO("========== 构建网页偏移库完成 ==========");
 }
 
+#endif
+
+void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
+{
+    LOG_INFO("========== 构建网页库 ==========");
+
+    ofstream ofsPages(pages);
+    if (!ofsPages.is_open())
+    {
+        LOG_ERROR("创建网页库失败:{}", pages);
+        return;
+    }
+
+    ofstream ofsOffsets(offsets);
+    if (!ofsOffsets.is_open())
+    {
+        LOG_ERROR("创建网页偏移库失败:{}", offsets);
+        return;
+    }
+
+    for (const auto &doc : documents_)
+    {
+        long long offset = ofsPages.tellp();
+
+        ofsPages << "<doc>"
+                 << "<id>" << doc.id << "</id>"
+                 << "<link>" << doc.link << "</link>"
+                 << "<title>" << doc.title << "</title>"
+                 << "<content>" << doc.content << "</content>"
+                 << "</doc>\n";
+
+        long long length = (long long)ofsPages.tellp() - offset;
+        ofsOffsets << doc.id << " " << offset << " " << length << "\n";
+    }
+
+    ofsPages.close();
+    ofsOffsets.close();
+
+    LOG_INFO("网页库保存成功: {} 共{}条", pages, documents_.size());
+    LOG_INFO("偏移库保存成功: {} 共{}条", offsets, documents_.size());
+}
 // 构建倒排索引库 <关键字> <文档 id> <关键字在文档中的权重>
 void PageProcessor::build_inverted_index(const string &filename)
 {

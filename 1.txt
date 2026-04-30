@@ -1,238 +1,4 @@
-#ifndef __WD_COMMON_H
-#define __WD_COMMON_H
-
-#include <arpa/inet.h>
-#include <assert.h>
-#include <dirent.h>
-#include <errno.h>
-#include <error.h>
-#include <fcntl.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <poll.h>
-#include <pthread.h>
-#include <signal.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/epoll.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
-#include <sys/sendfile.h>
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/sysinfo.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <time.h>
-#include <unistd.h>
-
-#define SIZE(a) (sizeof(a) / sizeof(a[0]))
-
-typedef void (*sighandler_t)(int);
-
-#endif
-#pragma once
-#include <string>
-#include <vector>
-
-class DirectoryScanner
-{
-  public:
-    // 遍历目录dir，获取目录里面的所有文件名
-    static std::vector<std::string> scan(const std::string &dir);
-
-  private:
-    DirectoryScanner() = delete;
-};#pragma once
-#include <cppjieba/Jieba.hpp>
-#include <set>
-#include <string>
-
-class KeyWordProcessor
-{
-  public:
-    KeyWordProcessor();
-
-    // chDir:中文语料库
-    // enDir:英文语料库
-    // 分析中文语料库和英文语料库
-    void process(const std::string &chDir, const std::string &enDir);
-
-  private:
-    // 创建中文词典库
-    void create_cn_dict(const std::string &dir, const std::string &outfile);
-
-    // 创建中文索引库
-    void build_cn_index(const std::string &dict, const std::string &index);
-
-    // 创建英文词典库
-    void create_en_dict(const std::string &dir, const std::string &outfile);
-
-    // 创建英文索引库
-    void build_en_index(const std::string &dict, const std::string &index);
-
-  private:
-    cppjieba::Jieba tokenizer_;
-    std::set<std::string> enStopWords_;
-    std::set<std::string> chStopWords_;
-};#pragma once
-#include <functional>
-#include <muduo/base/Timestamp.h>
-#include <muduo/net/Buffer.h>
-#include <muduo/net/TcpConnection.h>
-#include <string>
-
-class LengthHeaderCodec
-{
-
-  public:
-    struct Message
-    {
-        uint8_t type; // 消息的类型
-
-        std::string value; // 消息的内容
-        // uint32_t length; // value 的长度 //可以用下面方法替代
-        // 提供辅助方法
-        uint32_t size() const
-        {
-            return static_cast<uint32_t>(value.size());
-        }
-    };
-
-    using MessageCallback = std::function<void(const muduo::net::TcpConnectionPtr &,
-                                               const Message &, // ← 传完整 Message
-                                               muduo::Timestamp)>;
-
-    explicit LengthHeaderCodec(const MessageCallback &cb) : messageCallback_(cb)
-    {
-    }
-
-    void send(const muduo::net::TcpConnectionPtr &conn, const Message &msg);
-
-    void onMessage(const muduo::net::TcpConnectionPtr &conn, muduo::net::Buffer *buff, muduo::Timestamp time);
-
-  private:
-    // 协议头大小: type(1) + length(4) = 5字节
-    static const size_t HEADER_SIZE = sizeof(uint8_t) + sizeof(uint32_t);
-
-    MessageCallback messageCallback_;
-};#pragma once
-
-#include <spdlog/sinks/rotating_file_sink.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/spdlog.h>
-
-inline void initLogger()
-{
-    //  创建 logs 目录
-    system("mkdir -p logs");
-
-    //  控制台 sink（info 以上才显示，不刷屏）
-    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    console_sink->set_level(spdlog::level::info);
-
-    //  文件 sink（debug 以上全记录）
-    auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("logs/search.log",
-                                                                            1024 * 1024 * 5, // 单个文件最大 5MB
-                                                                            3                // 最多保留 3 个文件
-    );
-    file_sink->set_level(spdlog::level::debug);
-
-    // 合并两个 sink
-    auto logger = std::make_shared<spdlog::logger>("default", spdlog::sinks_init_list{console_sink, file_sink});
-
-    logger->set_level(spdlog::level::debug); // logger 本身放行所有级别
-    logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%^%l%$] %v");
-    spdlog::flush_on(spdlog::level::warn); // warn 以上立即刷入文件
-
-    spdlog::set_default_logger(logger);
-    spdlog::info("日志初始化完成 -> logs/search.log");
-}
-
-inline void shutdownLogger()
-{
-    spdlog::shutdown();
-}
-
-#define LOG_DEBUG(...) spdlog::debug(__VA_ARGS__)
-#define LOG_INFO(...) spdlog::info(__VA_ARGS__)
-#define LOG_WARN(...) spdlog::warn(__VA_ARGS__)
-#define LOG_ERROR(...) spdlog::error(__VA_ARGS__)#pragma once
-#include <string>
-#include <vector>
-
-#include <set>
-
-#include "cppjieba/Jieba.hpp"
-#include "simhash/Simhasher.hpp"
-
-class PageProcessor
-{
-  public:
-    PageProcessor();
-    void process(const std::string &dir);
-
-  private:
-    void parseRss(const std::string &filename);
-    // 解析dir目录下的xml文件，提取文档，放入documents中
-    void extract_documents(const std::string &dir);
-
-    // 依据SimHash算法对documents_去重
-    void deduplicate_documents();
-
-    // 构建网页库和网页偏移库
-    void build_pages_and_offsets(const std::string &pages, const std::string &offsets);
-
-    // 构建倒排索引库
-    void build_inverted_index(const std::string &filename);
-
-  private:
-    struct Document
-    {
-        int id;
-        std::string link;
-        std::string title;
-        std::string content;
-    };
-
-  private:
-    cppjieba::Jieba tokenizer_;
-    simhash::Simhasher hasher_;
-    std::set<std::string> stopWords_; // 方便查找
-    std::vector<Document> documents_;
-    std::unordered_map<std::string, std::vector<std::pair<int, double>>> invertedIndex_;
-};#pragma once
-#include <muduo/base/Logging.h>
-#include <muduo/base/Timestamp.h>
-#include <muduo/net/Callbacks.h>
-#include <muduo/net/EventLoop.h>
-#include <muduo/net/InetAddress.h>
-#include <muduo/net/TcpConnection.h>
-#include <muduo/net/TcpServer.h>
-#include <set>
-
-#include "LengthHeaderCodec.h"
-
-class Server
-{
-  public:
-    Server(muduo::net::EventLoop *loop, const muduo::net::InetAddress &listenAddr);
-    ~Server() = default;
-
-    void start();
-
-  private:
-    void onConnection(const muduo::net::TcpConnectionPtr &conn);
-
-    void onMessage(const muduo::net::TcpConnectionPtr &conn, const std::string &value, muduo::Timestamp receiveTime);
-
-  private:
-    std::set<muduo::net::TcpConnectionPtr> conns_;
-    muduo::net::TcpServer server_;
-    LengthHeaderCodec codec_;
-};#include <iostream>
+#include <iostream>
 
 #include "DirectoryScanner.h"
 
@@ -652,7 +418,256 @@ void KeyWordProcessor::build_en_index(const std::string &dict, const std::string
     ofs.close();
 
     LOG_INFO("英文索引完成 共 {} 行", line - 1);
-}#include "LengthHeaderCodec.h"
+}#include "KeywordRecommender.h"
+#include "Logger.h"
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <utfcpp/utf8.h>
+
+using namespace nlohmann;
+
+using namespace std;
+void KeywordRecommender::process()
+{
+}
+
+// 加载词典 && 加载索引
+KeywordRecommender::KeywordRecommender()
+{
+    LOG_INFO("=============构造KeywordRecommender关键词推荐器============");
+    // 加载词典
+    ifstream ifs_dict("./outfile/dict_ch.dat");
+    if (!ifs_dict.is_open())
+    {
+        LOG_ERROR("加载词典库失败:{}", "./outfile/dict_ch.dat");
+        return;
+    }
+
+    string line;
+    int total_lines = 0;
+
+    cnDict_.push_back({"", 0});
+
+    while (getline(ifs_dict, line))
+    {
+        total_lines++;
+        if (line.empty())
+            continue;
+        istringstream iss(line);
+        long long freq;
+        string word;
+        if (!(iss >> word >> freq))
+        {
+            LOG_WARN("词典格式错误，跳过该行: {}", line);
+            continue;
+        }
+
+        cnDict_.push_back({word, freq});
+    }
+    ifs_dict.close();
+
+    LOG_INFO("词典加载完成，共 {} 条,总行数:{}", cnDict_.size(), total_lines);
+
+    // 加载索引
+    LOG_INFO("加载索引库before");
+    ifstream ifs_index("./outfile/index_cn.dat");
+    if (!ifs_index.is_open())
+    {
+        LOG_ERROR("加载索引库失败:{}", "./outfile/index_cn.dat");
+        return;
+    }
+    LOG_INFO("加载索引库after");
+
+    total_lines = 0;
+    while (getline(ifs_index, line))
+    {
+        ++total_lines;
+
+        if (line.empty())
+            continue;
+
+        // 按空格分割字符串 → 优先用 istringstream！
+        istringstream iss(line);
+        string word;
+
+        iss >> word;
+        int line_index;
+
+        while (iss >> line_index)
+        {
+            cnIndex_[word].emplace(line_index);
+        }
+    }
+    ifs_index.close();
+    LOG_INFO("词典加载完成，共 {} 条,总行数:{}", cnIndex_.size(), total_lines);
+    LOG_INFO("=============构造KeywordRecommender关键词推荐器已完成============");
+}
+
+// 从索引库获取候选词行号集合
+std::set<int> KeywordRecommender::getCandidateLines(const std::string &keyword)
+{
+    set<int> result;
+
+    const char *curr = keyword.c_str();
+    const char *end = keyword.c_str() + keyword.size();
+
+    while (curr != end)
+    {
+        auto start = curr;
+        // 将 it 移动到下一个 utf8 字符所在的位置
+        utf8::next(curr, end);
+        // 一个汉字会占用多个字节，因此需要用 string 来表示一个汉字
+        string character = string(start, curr);
+
+        auto it = cnIndex_.find(character);
+        if (it == cnIndex_.end())
+        {
+            LOG_WARN("字符'{}'不在索引库中", character);
+            continue;
+        }
+
+        for (int lineNo : it->second)
+        {
+            result.insert(lineNo);
+        }
+    }
+
+    LOG_DEBUG("合并后候选行号总数: {}", result.size());
+    return result;
+}
+
+// 返回Json格式的推荐词列表
+std::string KeywordRecommender::recommend(const std::string &keyword, int topK)
+{
+
+    LOG_INFO("开始推荐, keyword={}, topK={}", keyword, topK);
+    // 获取候选词行号集合
+    set<int> candidateLines = getCandidateLines(keyword);
+
+    LOG_INFO("候选行号数量: {}", candidateLines.size());
+
+    if (candidateLines.empty())
+    {
+        LOG_WARN("关键字:{}没有找到候选行号", keyword);
+        return "[]";
+    }
+
+    // 根据行号从字典库取出候选词
+    //  {编辑距离，词频，词语}  大根堆
+    using Tuple = tuple<int, long long, string>;
+    priority_queue<Tuple> pq;
+
+    for (int lineNo : candidateLines)
+    {
+
+        if (lineNo <= 0 || lineNo >= static_cast<int>(cnDict_.size()))
+            continue;
+
+        auto &[word, freq] = cnDict_[lineNo];
+
+        // 计算编辑距离
+        int dist = editDistance(keyword, word);
+
+        // 词频取负，距离相同时词频越大越靠前
+        pq.push({dist, -freq, word});
+
+        if (static_cast<int>(pq.size()) > topK)
+        {
+            pq.pop();
+        }
+    }
+    // 取出结果(逆序)
+    vector<string> result;
+    while (!pq.empty())
+    {
+        // 取出单词本身
+        result.push_back(get<2>(pq.top()));
+        pq.pop();
+    }
+    reverse(result.begin(), result.end());
+
+    string jsonResult = json(result).dump();
+    LOG_INFO("推荐结果: keyword={}, result={}", keyword, jsonResult);
+
+    return jsonResult;
+}
+
+// 计算编辑距离
+int KeywordRecommender::editDistance(const std::string &s1, const std::string &s2)
+{
+    vector<string> chars1, chars2;
+
+    auto toChars = [](const string &s, vector<string> &chars) {
+        const char *curr = s.c_str();
+        const char *end = s.c_str() + s.size();
+        while (curr != end)
+        {
+            const char *start = curr;
+            utf8::next(curr, end);
+            chars.push_back(string(start, curr));
+        }
+    };
+
+    toChars(s1, chars1);
+    toChars(s2, chars2);
+
+    int m = chars1.size();
+    int n = chars2.size();
+
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+
+    for (int i = 0; i <= m; i++)
+        dp[i][0] = i;
+    for (int j = 0; j <= n; j++)
+        dp[0][j] = j;
+
+    for (int i = 1; i <= m; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (chars1[i - 1] == chars2[j - 1])
+            {
+                dp[i][j] = dp[i - 1][j - 1];
+            }
+            else
+            {
+                dp[i][j] = min({dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + 1});
+            }
+        }
+    }
+    return dp[m][n];
+}
+
+#if TESTRECOM
+int main()
+{
+    // ① 构造推荐器（自动加载词典和索引）
+    KeywordRecommender recommender;
+
+    // ② 测试关键字列表
+    vector<string> testKeywords = {
+        "艺",   // 词频最高 1197，命中最多
+        "文化", // 词频 521
+        "文学", // 词频 307
+        "精神", // 词频 182
+        "中国"  // 专有名词，易验证
+    };
+
+    // ③ 逐个测试
+    for (auto &keyword : testKeywords)
+    {
+        cout << "==============================" << endl;
+        cout << "输入关键字: " << keyword << endl;
+
+        string result = recommender.recommend(keyword, 5);
+
+        cout << "推荐结果: " << result << endl;
+    }
+
+    cout << "==============================" << endl;
+    return 0;
+}
+#endif#include "LengthHeaderCodec.h"
 #include <endian.h>
 
 using namespace muduo::net;
@@ -678,7 +693,16 @@ void LengthHeaderCodec::onMessage(const TcpConnectionPtr &conn, Buffer *buff, Ti
     while (buff->readableBytes() >= HEADER_SIZE)
     {
         // 读type(不移动readerIndex)
-        uint8_t type = static_cast<uint8_t>(buff->peekInt8());
+        //  读 type，直接转成枚举
+        uint8_t rawType = static_cast<uint8_t>(buff->peekInt8());
+        MessageType type = toMessageType(rawType); // ← 安全转换
+
+        //  提前过滤非法类型
+        if (type == MessageType::UNKNOWN)
+        {
+            conn->shutdown(); // 非法消息，断开连接
+            break;
+        }
 
         // 读取length
         const char *data = buff->peek();
@@ -1210,6 +1234,7 @@ int main()
 #endif#include "DirectoryScanner.h"
 #include "KeywordProcessor.h"
 
+#include "server.h"
 #include <fstream>
 #include <map>
 #include <ostream>
@@ -1218,6 +1243,27 @@ int main()
 #include "Logger.h"
 using namespace std;
 
+void Server::onMessage(const muduo::net::TcpConnectionPtr &conn, const LengthHeaderCodec::Message &msg,
+                       muduo::Timestamp receiveTime)
+{
+    //  用 using 简化长名字
+    using MT = LengthHeaderCodec::MessageType;
+
+    switch (msg.type)
+    {
+    case MT::RECOMMEND:
+        // 调用关键字推荐器
+        break;
+    case MT::SEARCH:
+        // 调用网页搜索器
+        break;
+    default:
+        LOG_WARN("Unknown message type");
+        break;
+    }
+}
+
+#if 0
 int main()
 {
     initLogger();
@@ -1230,3 +1276,4 @@ int main()
     LOG_INFO("项目结束运行");
     return 0;
 }
+#endif
