@@ -26,12 +26,17 @@ KeyWordProcessor::KeyWordProcessor()
 {
     LOG_INFO("初始化KeyWordProcessor");
     vector<string> filenames = DirectoryScanner::scan(stopwords_dir);
-    LOG_INFO("扫描到{}个停用词文件", filenames.size());
+
+    auto trim = [](string &w) {
+        if (!w.empty() && w.back() == '\r')
+            w.pop_back();
+        if (!w.empty() && w.back() == '\n')
+            w.pop_back();
+    };
 
     for (auto &filename : filenames)
     {
         ifstream ifs(filename);
-
         if (!ifs.is_open())
         {
             LOG_ERROR("停用词文件打开失败:{}", filename);
@@ -41,21 +46,22 @@ KeyWordProcessor::KeyWordProcessor()
         string word;
         if (filename.find("cn") != std::string::npos)
         {
-            // 中文
             while (getline(ifs, word))
             {
-                chStopWords_.emplace(word);
+                trim(word);
+                if (!word.empty())
+                    chStopWords_.emplace(word);
             }
         }
         else if (filename.find("en") != std::string::npos)
         {
-            // 英文
             while (getline(ifs, word))
             {
-                enStopWords_.emplace(word);
+                trim(word);
+                if (!word.empty())
+                    enStopWords_.emplace(word);
             }
         }
-
         ifs.close();
     }
 

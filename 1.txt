@@ -49,14 +49,22 @@ class SearchClient
 
     void onMessage(const TcpConnectionPtr &conn, const LengthHeaderCodec::Message &msg, Timestamp ts)
     {
-        // 服务端返回 JSON，直接打印
-        std::cout << "\n搜索结果：\n" << msg.value << "\n\n请输入查询内容：";
+        using MT = LengthHeaderCodec::MessageType;
+        if (msg.type == MT::RECOMMEND)
+        {
+            std::cout << "\n推荐关键词：\n" << msg.value << "\n";
+        }
+        else if (msg.type == MT::SEARCH)
+        {
+            std::cout << "\n搜索结果：\n" << msg.value << "\n";
+        }
+        std::cout << "\n请输入：";
         std::cout.flush();
     }
-
     void inputLoop()
     {
         std::string line;
+        std::cout << "命令：直接输入内容=搜索，输入 r <词>=关键字推荐，quit=退出\n";
         while (std::getline(std::cin, line))
         {
             if (line == "quit")
@@ -68,13 +76,25 @@ class SearchClient
                 continue;
 
             auto conn = conn_;
-            if (conn)
+            if (!conn)
+                continue;
+
+            LengthHeaderCodec::Message msg;
+
+            if (line.size() > 2 && line[0] == 'r' && line[1] == ' ')
             {
-                LengthHeaderCodec::Message msg;
+                // 推荐模式
+                msg.type = LengthHeaderCodec::MessageType::RECOMMEND;
+                msg.value = line.substr(2);
+            }
+            else
+            {
+                // 搜索模式
                 msg.type = LengthHeaderCodec::MessageType::SEARCH;
                 msg.value = line;
-                codec_.send(conn, msg);
             }
+
+            codec_.send(conn, msg);
         }
     }
 
@@ -176,12 +196,17 @@ KeyWordProcessor::KeyWordProcessor()
 {
     LOG_INFO("初始化KeyWordProcessor");
     vector<string> filenames = DirectoryScanner::scan(stopwords_dir);
-    LOG_INFO("扫描到{}个停用词文件", filenames.size());
+
+    auto trim = [](string &w) {
+        if (!w.empty() && w.back() == '\r')
+            w.pop_back();
+        if (!w.empty() && w.back() == '\n')
+            w.pop_back();
+    };
 
     for (auto &filename : filenames)
     {
         ifstream ifs(filename);
-
         if (!ifs.is_open())
         {
             LOG_ERROR("停用词文件打开失败:{}", filename);
@@ -191,21 +216,22 @@ KeyWordProcessor::KeyWordProcessor()
         string word;
         if (filename.find("cn") != std::string::npos)
         {
-            // 中文
             while (getline(ifs, word))
             {
-                chStopWords_.emplace(word);
+                trim(word);
+                if (!word.empty())
+                    chStopWords_.emplace(word);
             }
         }
         else if (filename.find("en") != std::string::npos)
         {
-            // 英文
             while (getline(ifs, word))
             {
-                enStopWords_.emplace(word);
+                trim(word);
+                if (!word.empty())
+                    enStopWords_.emplace(word);
             }
         }
-
         ifs.close();
     }
 
@@ -1492,25 +1518,6 @@ WebSearcher::WebSearcher()
     pagesIfs_.open(pagesFile_);
     if (!pagesIfs_.is_open())
         LOG_ERROR("网页库打开失败: {}", pagesFile_);
-    fetchDocument(1);
-
-    vector<std::string> outKeywords;
-    computeQueryVector(
-        "在步入“金九银十”，传统家居行业迎来销售旺季之际，东阳市积极推进促进消费工作，响应“浙里来消费·2019金秋购物节”活"
-        "动，将于本月至11月推出第十一届休闲购物节。 "
-        "作为其中的一项重要活动，第二届东作红木文化艺术节将于9月29日启幕，并持续至11月20日，为消费者带来一场可观、可赏"
-        "、可购、可玩的中式文化盛宴。 "
-        "据悉，第二届东作红木文化艺术节由浙江省家具协会等单位主办，东阳市红木家具协会、东阳红木家具市场、水墨会承办。活"
-        "动地点位于东阳市世贸大道599号的东阳红木家具市场。 "
-        "在上届成功举办的基础上，本届艺术节将从层级到规模，再到内容进行全面优化提升。活动内容丰富、形式多样，旨在探讨新"
-        "经济新常态下中国传统家具的发展趋势与未来，发扬和传承中国红木文化，让红木文化更加深入民心。名家书画•红木艺术融"
-        "合展和周逢俊周逢刚水墨情思与文人空间展将贯穿本届东作红木文化艺术节始终。 "
-        "本次艺术节还将开展古风国韵——国庆游园活动、爱心助学公益活动、“国摄天香”摄影大赛活动等，推出599号超级免单节给消"
-        "费者实实在在让利，名企让利、名师赠画等一系列活动也将同期举行。 "
-        "东阳市红木家具行业协会常务副会长、东阳红木家具市场总经理曹伟表示，东阳红木产业将以本次艺术节为契机，集中宣传、"
-        "集中爆破，炮制一场中国传统文化的盛宴，向各地的消费者宣传展示东阳红木行业的发展实力，促进和拉动东阳红木商贸的发"
-        "展，提高东阳红木的知名度和美誉度。（房晓雯）",
-        outKeywords);
 }
 
 // 加载停用词

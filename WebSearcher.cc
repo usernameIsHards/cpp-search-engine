@@ -251,6 +251,7 @@ set<int> WebSearcher::findCandidateDocs(const vector<string> &keywords)
     return result;
 }
 
+// 3. 余弦相似度（文档向量已归一化，直接点积）
 double WebSearcher::cosineSimilarity(const unordered_map<string, double> &queryVec, int docId)
 {
     double score = 0.0;
@@ -274,8 +275,8 @@ double WebSearcher::cosineSimilarity(const unordered_map<string, double> &queryV
     return score;
 }
 
-// 在 content 中找第一个关键词出现的位置，截取其前后共 maxLen 个字符的窗口。失败则退化为静态摘要（content 前 maxLen
-// 字符）。没搞懂
+// 在 content 中找第一个关键词出现的位置，截取其前后共 maxLen 个字符的窗口。
+// 失败则退化为静态摘要（content 前 maxLen字符）。
 string WebSearcher::generateAbstract(const string &content, const vector<string> &keywords, int maxLen)
 {
     // 动态摘要:找到第一个关键词的位置
@@ -291,8 +292,10 @@ string WebSearcher::generateAbstract(const string &content, const vector<string>
     size_t start = 0;
     if (hitPos != string::npos)
     {
+        // 关键词不能放在摘要最开头，所以从关键词位置往前退一段距离
         start = hitPos > (size_t)(maxLen * 3 / 2) ? hitPos - maxLen * 3 / 2 : 0;
         // 对齐到合法UTF-8字符边界
+        // 防止中文乱码
         while (start > 0 && (content[start] & 0xc0) == 0x80)
             --start;
     }
@@ -302,6 +305,7 @@ string WebSearcher::generateAbstract(const string &content, const vector<string>
     const char *end = content.c_str() + content.size();
     int count = 0;
     const char *cut = curr;
+
     while (curr != end && count < maxLen)
     {
         cut = curr;
@@ -315,6 +319,8 @@ string WebSearcher::search(const string &query, int topK)
 {
     // 1.计算query向量
     vector<string> keywords;
+
+    // 获取关键词列表   查询内容的 {关键词:权重}
     auto queryVec = computeQueryVector(query, keywords);
     if (queryVec.empty())
     {
@@ -335,6 +341,7 @@ string WebSearcher::search(const string &query, int topK)
 
     for (int docId : candidates)
     {
+        // 计算余弦相似度
         double score = cosineSimilarity(queryVec, docId);
         if ((int)minHeap.size() < topK)
         {
