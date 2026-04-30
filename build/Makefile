@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main
+# Target rules for targets named server
 
 # Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
-.PHONY : main
+server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 server
+.PHONY : server
 
 # fast build rule for target.
-main/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
+server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
+.PHONY : server/fast
 
 DirectoryScanner.o: DirectoryScanner.cc.o
 .PHONY : DirectoryScanner.o
 
 # target to build an object file
 DirectoryScanner.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DirectoryScanner.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/DirectoryScanner.cc.o
 .PHONY : DirectoryScanner.cc.o
 
 DirectoryScanner.i: DirectoryScanner.cc.i
@@ -142,7 +142,7 @@ DirectoryScanner.i: DirectoryScanner.cc.i
 
 # target to preprocess a source file
 DirectoryScanner.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DirectoryScanner.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/DirectoryScanner.cc.i
 .PHONY : DirectoryScanner.cc.i
 
 DirectoryScanner.s: DirectoryScanner.cc.s
@@ -150,7 +150,7 @@ DirectoryScanner.s: DirectoryScanner.cc.s
 
 # target to generate assembly for a file
 DirectoryScanner.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DirectoryScanner.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/DirectoryScanner.cc.s
 .PHONY : DirectoryScanner.cc.s
 
 KeywordProcessor.o: KeywordProcessor.cc.o
@@ -158,7 +158,7 @@ KeywordProcessor.o: KeywordProcessor.cc.o
 
 # target to build an object file
 KeywordProcessor.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/KeywordProcessor.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/KeywordProcessor.cc.o
 .PHONY : KeywordProcessor.cc.o
 
 KeywordProcessor.i: KeywordProcessor.cc.i
@@ -166,7 +166,7 @@ KeywordProcessor.i: KeywordProcessor.cc.i
 
 # target to preprocess a source file
 KeywordProcessor.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/KeywordProcessor.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/KeywordProcessor.cc.i
 .PHONY : KeywordProcessor.cc.i
 
 KeywordProcessor.s: KeywordProcessor.cc.s
@@ -174,15 +174,111 @@ KeywordProcessor.s: KeywordProcessor.cc.s
 
 # target to generate assembly for a file
 KeywordProcessor.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/KeywordProcessor.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/KeywordProcessor.cc.s
 .PHONY : KeywordProcessor.cc.s
+
+KeywordRecommender.o: KeywordRecommender.cc.o
+.PHONY : KeywordRecommender.o
+
+# target to build an object file
+KeywordRecommender.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/KeywordRecommender.cc.o
+.PHONY : KeywordRecommender.cc.o
+
+KeywordRecommender.i: KeywordRecommender.cc.i
+.PHONY : KeywordRecommender.i
+
+# target to preprocess a source file
+KeywordRecommender.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/KeywordRecommender.cc.i
+.PHONY : KeywordRecommender.cc.i
+
+KeywordRecommender.s: KeywordRecommender.cc.s
+.PHONY : KeywordRecommender.s
+
+# target to generate assembly for a file
+KeywordRecommender.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/KeywordRecommender.cc.s
+.PHONY : KeywordRecommender.cc.s
+
+LengthHeaderCodec.o: LengthHeaderCodec.cc.o
+.PHONY : LengthHeaderCodec.o
+
+# target to build an object file
+LengthHeaderCodec.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/LengthHeaderCodec.cc.o
+.PHONY : LengthHeaderCodec.cc.o
+
+LengthHeaderCodec.i: LengthHeaderCodec.cc.i
+.PHONY : LengthHeaderCodec.i
+
+# target to preprocess a source file
+LengthHeaderCodec.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/LengthHeaderCodec.cc.i
+.PHONY : LengthHeaderCodec.cc.i
+
+LengthHeaderCodec.s: LengthHeaderCodec.cc.s
+.PHONY : LengthHeaderCodec.s
+
+# target to generate assembly for a file
+LengthHeaderCodec.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/LengthHeaderCodec.cc.s
+.PHONY : LengthHeaderCodec.cc.s
+
+PageProcessor.o: PageProcessor.cc.o
+.PHONY : PageProcessor.o
+
+# target to build an object file
+PageProcessor.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/PageProcessor.cc.o
+.PHONY : PageProcessor.cc.o
+
+PageProcessor.i: PageProcessor.cc.i
+.PHONY : PageProcessor.i
+
+# target to preprocess a source file
+PageProcessor.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/PageProcessor.cc.i
+.PHONY : PageProcessor.cc.i
+
+PageProcessor.s: PageProcessor.cc.s
+.PHONY : PageProcessor.s
+
+# target to generate assembly for a file
+PageProcessor.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/PageProcessor.cc.s
+.PHONY : PageProcessor.cc.s
+
+WebSearcher.o: WebSearcher.cc.o
+.PHONY : WebSearcher.o
+
+# target to build an object file
+WebSearcher.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/WebSearcher.cc.o
+.PHONY : WebSearcher.cc.o
+
+WebSearcher.i: WebSearcher.cc.i
+.PHONY : WebSearcher.i
+
+# target to preprocess a source file
+WebSearcher.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/WebSearcher.cc.i
+.PHONY : WebSearcher.cc.i
+
+WebSearcher.s: WebSearcher.cc.s
+.PHONY : WebSearcher.s
+
+# target to generate assembly for a file
+WebSearcher.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/WebSearcher.cc.s
+.PHONY : WebSearcher.cc.s
 
 main.o: main.cc.o
 .PHONY : main.o
 
 # target to build an object file
 main.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cc.o
 .PHONY : main.cc.o
 
 main.i: main.cc.i
@@ -190,7 +286,7 @@ main.i: main.cc.i
 
 # target to preprocess a source file
 main.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cc.i
 .PHONY : main.cc.i
 
 main.s: main.cc.s
@@ -198,8 +294,32 @@ main.s: main.cc.s
 
 # target to generate assembly for a file
 main.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cc.s
 .PHONY : main.cc.s
+
+server.o: server.cc.o
+.PHONY : server.o
+
+# target to build an object file
+server.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server.cc.o
+.PHONY : server.cc.o
+
+server.i: server.cc.i
+.PHONY : server.i
+
+# target to preprocess a source file
+server.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server.cc.i
+.PHONY : server.cc.i
+
+server.s: server.cc.s
+.PHONY : server.s
+
+# target to generate assembly for a file
+server.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server.cc.s
+.PHONY : server.cc.s
 
 # Help Target
 help:
@@ -209,16 +329,31 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... main"
+	@echo "... server"
 	@echo "... DirectoryScanner.o"
 	@echo "... DirectoryScanner.i"
 	@echo "... DirectoryScanner.s"
 	@echo "... KeywordProcessor.o"
 	@echo "... KeywordProcessor.i"
 	@echo "... KeywordProcessor.s"
+	@echo "... KeywordRecommender.o"
+	@echo "... KeywordRecommender.i"
+	@echo "... KeywordRecommender.s"
+	@echo "... LengthHeaderCodec.o"
+	@echo "... LengthHeaderCodec.i"
+	@echo "... LengthHeaderCodec.s"
+	@echo "... PageProcessor.o"
+	@echo "... PageProcessor.i"
+	@echo "... PageProcessor.s"
+	@echo "... WebSearcher.o"
+	@echo "... WebSearcher.i"
+	@echo "... WebSearcher.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... server.o"
+	@echo "... server.i"
+	@echo "... server.s"
 .PHONY : help
 
 

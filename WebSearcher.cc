@@ -5,7 +5,7 @@
 #include <utfcpp/utf8.h>
 
 using namespace std;
-
+using namespace nlohmann;
 WebSearcher::WebSearcher()
 {
     LOG_INFO("==============构造网页搜索器开始=================");
@@ -17,25 +17,6 @@ WebSearcher::WebSearcher()
     pagesIfs_.open(pagesFile_);
     if (!pagesIfs_.is_open())
         LOG_ERROR("网页库打开失败: {}", pagesFile_);
-    fetchDocument(1);
-
-    vector<std::string> outKeywords;
-    computeQueryVector(
-        "在步入“金九银十”，传统家居行业迎来销售旺季之际，东阳市积极推进促进消费工作，响应“浙里来消费·2019金秋购物节”活"
-        "动，将于本月至11月推出第十一届休闲购物节。 "
-        "作为其中的一项重要活动，第二届东作红木文化艺术节将于9月29日启幕，并持续至11月20日，为消费者带来一场可观、可赏"
-        "、可购、可玩的中式文化盛宴。 "
-        "据悉，第二届东作红木文化艺术节由浙江省家具协会等单位主办，东阳市红木家具协会、东阳红木家具市场、水墨会承办。活"
-        "动地点位于东阳市世贸大道599号的东阳红木家具市场。 "
-        "在上届成功举办的基础上，本届艺术节将从层级到规模，再到内容进行全面优化提升。活动内容丰富、形式多样，旨在探讨新"
-        "经济新常态下中国传统家具的发展趋势与未来，发扬和传承中国红木文化，让红木文化更加深入民心。名家书画•红木艺术融"
-        "合展和周逢俊周逢刚水墨情思与文人空间展将贯穿本届东作红木文化艺术节始终。 "
-        "本次艺术节还将开展古风国韵——国庆游园活动、爱心助学公益活动、“国摄天香”摄影大赛活动等，推出599号超级免单节给消"
-        "费者实实在在让利，名企让利、名师赠画等一系列活动也将同期举行。 "
-        "东阳市红木家具行业协会常务副会长、东阳红木家具市场总经理曹伟表示，东阳红木产业将以本次艺术节为契机，集中宣传、"
-        "集中爆破，炮制一场中国传统文化的盛宴，向各地的消费者宣传展示东阳红木行业的发展实力，促进和拉动东阳红木商贸的发"
-        "展，提高东阳红木的知名度和美誉度。（房晓雯）",
-        outKeywords);
 }
 
 // 加载停用词
@@ -188,6 +169,8 @@ unordered_map<string, double> WebSearcher::computeQueryVector(const string &quer
         tf[word]++;
     }
 
+    LOG_INFO("query分词原始数量:{}, 过滤后关键词数量:{}", words.size(), tf.size());
+
     // 收集关键词列表
     for (const auto &[word, _] : tf)
         outKeywords.push_back(word);
@@ -197,7 +180,10 @@ unordered_map<string, double> WebSearcher::computeQueryVector(const string &quer
         total += cnt;
 
     if (total == 0)
+    {
+        LOG_WARN("query[{}] 无有效关键词，返回空向量", query);
         return {};
+    }
 
     int N = totalDocs_;
 
@@ -227,13 +213,166 @@ unordered_map<string, double> WebSearcher::computeQueryVector(const string &quer
         }
     }
 
-    LOG_INFO("处理分词完成");
+    LOG_INFO("query[{}] 向量计算完成, 关键词:{}, norm:{:.4f}", query, outKeywords.size(), norm);
     return queryVec;
 }
 
+// 2. 倒排索引求交集，找包含所有关键字的文档 id
+set<int> WebSearcher::findCandidateDocs(const vector<string> &keywords)
+{
+    if (keywords.empty())
+        return {};
+
+    // 用第一个关键词的文档列表初始化结果集
+    set<int> result;
+    for (const auto &[docId, weight] : invertedIndex_.at(keywords[0]))
+        result.insert(docId);
+
+    // 逐个关键字求交集
+    for (int i = 1; i < keywords.size(); i++)
+    {
+        const auto &list = invertedIndex_.at(keywords[i]);
+        set<int> cur;
+
+        for (const auto &[docId, _] : list)
+            cur.insert(docId);
+
+        set<int> inter;
+        set_intersection(result.begin(), result.end(), cur.begin(), cur.end(), inserter(inter, inter.begin()));
+        result = move(inter);
+
+        if (result.empty())
+        {
+            LOG_WARN("关键词交集为空，无匹配文档");
+            return {};
+        }
+    }
+    LOG_INFO("候选文档数量: {}", result.size());
+    return result;
+}
+
+double WebSearcher::cosineSimilarity(const unordered_map<string, double> &queryVec, int docId)
+{
+    double score = 0.0;
+
+    for (const auto &[word, qWeight] : queryVec)
+    {
+        auto it = invertedIndex_.find(word);
+        if (it == invertedIndex_.end())
+            continue;
+
+        for (const auto &[id, dWeight] : it->second)
+        {
+            // 在该词的倒排列表里找 docId 对应的权重
+            if (id == docId)
+            {
+                score += qWeight * dWeight;
+                break;
+            }
+        }
+    }
+    return score;
+}
+
+// 在 content 中找第一个关键词出现的位置，截取其前后共 maxLen 个字符的窗口。失败则退化为静态摘要（content 前 maxLen
+// 字符）。没搞懂
+string WebSearcher::generateAbstract(const string &content, const vector<string> &keywords, int maxLen)
+{
+    // 动态摘要:找到第一个关键词的位置
+    size_t hitPos = string::npos;
+    for (const auto &kw : keywords)
+    {
+        hitPos = content.find(kw);
+        if (hitPos != string::npos)
+            break;
+    }
+
+    // 确定截取起点(字节位置),往前回退一半窗口
+    size_t start = 0;
+    if (hitPos != string::npos)
+    {
+        start = hitPos > (size_t)(maxLen * 3 / 2) ? hitPos - maxLen * 3 / 2 : 0;
+        // 对齐到合法UTF-8字符边界
+        while (start > 0 && (content[start] & 0xc0) == 0x80)
+            --start;
+    }
+
+    // 按UTF-8字符截取maxLen个字符
+    const char *curr = content.c_str() + start;
+    const char *end = content.c_str() + content.size();
+    int count = 0;
+    const char *cut = curr;
+    while (curr != end && count < maxLen)
+    {
+        cut = curr;
+        utf8::next(curr, end);
+        ++count;
+    }
+    return content.substr(start, curr - (content.c_str() + start));
+}
+
+string WebSearcher::search(const string &query, int topK)
+{
+    // 1.计算query向量
+    vector<string> keywords;
+    auto queryVec = computeQueryVector(query, keywords);
+    if (queryVec.empty())
+    {
+        return "[]";
+    }
+
+    // 2.倒排索引求候选文档(包含所有关键词的交集)
+    auto candidates = findCandidateDocs(keywords);
+    if (candidates.empty())
+    {
+        LOG_WARN("无候选文档");
+        return "[]";
+    }
+
+    // 3.余弦相似度打分，最小堆保留topK
+    using ScoreDoc = pair<double, int>; //(score,docId)
+    priority_queue<ScoreDoc, vector<ScoreDoc>, greater<ScoreDoc>> minHeap;
+
+    for (int docId : candidates)
+    {
+        double score = cosineSimilarity(queryVec, docId);
+        if ((int)minHeap.size() < topK)
+        {
+            minHeap.push({score, docId});
+        }
+        else if (score > minHeap.top().first)
+        {
+            minHeap.pop();
+            minHeap.push({score, docId});
+        }
+    }
+
+    // 4. 取出并降序排列
+    std::vector<ScoreDoc> results;
+    while (!minHeap.empty())
+    {
+        results.push_back(minHeap.top());
+        minHeap.pop();
+    }
+    std::sort(results.rbegin(), results.rend());
+
+    // 5.拼装JSON
+    json arr = json::array();
+    for (auto &[score, docId] : results)
+    {
+        DocInfo doc = fetchDocument(docId);
+        doc.abstract = generateAbstract(doc.content, keywords);
+        arr.push_back({{"id", doc.id}, {"title", doc.title}, {"link", doc.link}, {"abstract", doc.abstract}});
+    }
+    LOG_INFO("search 完成，返回 {} 条结果", arr.size());
+    return arr.dump();
+}
+
+#ifdef SEARCH
 int main()
 {
     WebSearcher w;
 
     return 0;
 }
+#endif

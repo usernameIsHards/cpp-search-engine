@@ -1,4 +1,101 @@
+#include "LengthHeaderCodec.h"
 #include <iostream>
+#include <muduo/net/EventLoop.h>
+#include <muduo/net/InetAddress.h>
+#include <muduo/net/TcpClient.h>
+#include <string>
+#include <thread>
+
+using namespace muduo;
+using namespace muduo::net;
+
+class SearchClient
+{
+  public:
+    SearchClient(EventLoop *loop, const InetAddress &serverAddr)
+        : loop_(loop), client_(loop, serverAddr, "SearchClient"),
+          codec_([this](const TcpConnectionPtr &conn, const LengthHeaderCodec::Message &msg, Timestamp ts) {
+              onMessage(conn, msg, ts);
+          })
+    {
+        client_.setConnectionCallback([this](const TcpConnectionPtr &conn) { onConnection(conn); });
+
+        client_.setMessageCallback(
+            [this](const TcpConnectionPtr &conn, Buffer *buf, Timestamp ts) { codec_.onMessage(conn, buf, ts); });
+    }
+
+    void connect()
+    {
+        client_.connect();
+    }
+
+  private:
+    void onConnection(const TcpConnectionPtr &conn)
+    {
+        if (conn->connected())
+        {
+            conn_ = conn;
+            std::cout << "已连接服务器，请输入查询内容（输入 quit 退出）：\n";
+            // 启动输入线程
+            inputThread_ = std::thread([this]() { inputLoop(); });
+            inputThread_.detach();
+        }
+        else
+        {
+            conn_.reset();
+            loop_->quit();
+        }
+    }
+
+    void onMessage(const TcpConnectionPtr &conn, const LengthHeaderCodec::Message &msg, Timestamp ts)
+    {
+        // 服务端返回 JSON，直接打印
+        std::cout << "\n搜索结果：\n" << msg.value << "\n\n请输入查询内容：";
+        std::cout.flush();
+    }
+
+    void inputLoop()
+    {
+        std::string line;
+        while (std::getline(std::cin, line))
+        {
+            if (line == "quit")
+            {
+                loop_->quit();
+                break;
+            }
+            if (line.empty())
+                continue;
+
+            auto conn = conn_;
+            if (conn)
+            {
+                LengthHeaderCodec::Message msg;
+                msg.type = LengthHeaderCodec::MessageType::SEARCH;
+                msg.value = line;
+                codec_.send(conn, msg);
+            }
+        }
+    }
+
+    EventLoop *loop_;
+    TcpClient client_;
+    LengthHeaderCodec codec_;
+    TcpConnectionPtr conn_;
+    std::thread inputThread_;
+};
+
+int main(int argc, char *argv[])
+{
+    const char *ip = argc > 1 ? argv[1] : "127.0.0.1";
+    uint16_t port = argc > 2 ? atoi(argv[2]) : 8080;
+
+    EventLoop loop;
+    InetAddress serverAddr(ip, port);
+    SearchClient client(&loop, serverAddr);
+    client.connect();
+    loop.loop();
+}#include <iostream>
 
 #include "DirectoryScanner.h"
 
@@ -723,6 +820,20 @@ void LengthHeaderCodec::onMessage(const TcpConnectionPtr &conn, Buffer *buff, Ti
         msg.value = std::move(value);
         messageCallback_(conn, msg, receiveTime);
     }
+}#include "Logger.h"
+#include "server.h"
+#include <muduo/net/EventLoop.h>
+#include <muduo/net/InetAddress.h>
+
+int main()
+{
+    initLogger();
+    muduo::net::EventLoop loop;
+    muduo::net::InetAddress addr(8080);
+    Server server(&loop, addr);
+    server.start();
+    loop.loop();
+    shutdownLogger();
 }#include "PageProcessor.h"
 #include "DirectoryScanner.h"
 #include "KeywordProcessor.h"
@@ -760,6 +871,8 @@ PageProcessor::PageProcessor() : tokenizer_()
             // 中文
             while (getline(ifs, word))
             {
+                if (!word.empty() && word.back() == '\r')
+                    word.pop_back();
                 stopWords_.emplace(word);
             }
         }
@@ -768,6 +881,8 @@ PageProcessor::PageProcessor() : tokenizer_()
             // 英文
             while (getline(ifs, word))
             {
+                if (!word.empty() && word.back() == '\r')
+                    word.pop_back();
                 stopWords_.emplace(word);
             }
         }
@@ -817,22 +932,25 @@ string decodeHtmlEntities(const string &str)
 static string clearHtmlTag(const string &str)
 {
     if (str.empty())
-    {
         return "";
-    }
-    // 第一步：去除HTML标签
+
+    // 先整块删除 <script>...</script>
+    regex scriptReg("<script[^>]*>[\\s\\S]*?</script>", regex_constants::icase);
+    string res = regex_replace(str, scriptReg, "");
+
+    // 再删除 <style>...</style>（同理）
+    regex styleReg("<style[^>]*>[\\s\\S]*?</style>", regex_constants::icase);
+    res = regex_replace(res, styleReg, "");
+
+    // 去除剩余 HTML 标签
     regex htmlReg("<[^>]+>");
+    res = regex_replace(res, htmlReg, "");
 
-    string res = regex_replace(str, htmlReg, "");
-
-    //  第二步：解码HTML实体
     res = decodeHtmlEntities(res);
 
-    //  第三步：去除多余空白
     regex spaceReg("\\s+");
     res = regex_replace(res, spaceReg, " ");
 
-    //  去掉首尾空格
     size_t start = res.find_first_not_of(" ");
     size_t end = res.find_last_not_of(" ");
     if (start == string::npos)
@@ -982,6 +1100,7 @@ void PageProcessor::deduplicate_documents()
 extern string filterWord_ch(const string &word);
 
 // 构建网页库和网页偏移库
+#if 0
 void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
 {
 
@@ -1084,6 +1203,47 @@ void PageProcessor::build_pages_and_offsets(const string &pages, const string &o
     LOG_INFO("========== 构建网页偏移库完成 ==========");
 }
 
+#endif
+
+void PageProcessor::build_pages_and_offsets(const string &pages, const string &offsets)
+{
+    LOG_INFO("========== 构建网页库 ==========");
+
+    ofstream ofsPages(pages);
+    if (!ofsPages.is_open())
+    {
+        LOG_ERROR("创建网页库失败:{}", pages);
+        return;
+    }
+
+    ofstream ofsOffsets(offsets);
+    if (!ofsOffsets.is_open())
+    {
+        LOG_ERROR("创建网页偏移库失败:{}", offsets);
+        return;
+    }
+
+    for (const auto &doc : documents_)
+    {
+        long long offset = ofsPages.tellp();
+
+        ofsPages << "<doc>"
+                 << "<id>" << doc.id << "</id>"
+                 << "<link>" << doc.link << "</link>"
+                 << "<title>" << doc.title << "</title>"
+                 << "<content>" << doc.content << "</content>"
+                 << "</doc>\n";
+
+        long long length = (long long)ofsPages.tellp() - offset;
+        ofsOffsets << doc.id << " " << offset << " " << length << "\n";
+    }
+
+    ofsPages.close();
+    ofsOffsets.close();
+
+    LOG_INFO("网页库保存成功: {} 共{}条", pages, documents_.size());
+    LOG_INFO("偏移库保存成功: {} 共{}条", offsets, documents_.size());
+}
 // 构建倒排索引库 <关键字> <文档 id> <关键字在文档中的权重>
 void PageProcessor::build_inverted_index(const string &filename)
 {
@@ -1231,17 +1391,41 @@ int main()
 
     return 0;
 }
-#endif#include "DirectoryScanner.h"
+#endif#include "server.h"
+#include "DirectoryScanner.h"
 #include "KeywordProcessor.h"
+#include "Logger.h"
 
-#include "server.h"
 #include <fstream>
 #include <map>
 #include <ostream>
 #include <set>
-
-#include "Logger.h"
 using namespace std;
+using namespace muduo;
+using namespace muduo::net;
+
+Server::Server(EventLoop *loop, const InetAddress &addr)
+    : server_(loop, addr, "SearchServer"),
+      codec_([this](const muduo::net::TcpConnectionPtr &conn, const LengthHeaderCodec::Message &msg,
+                    muduo::Timestamp ts) { onMessage(conn, msg, ts); })
+{
+    server_.setConnectionCallback([this](const TcpConnectionPtr &conn) { onConnection(conn); });
+
+    server_.setMessageCallback(
+        [this](const TcpConnectionPtr &conn, Buffer *buf, Timestamp ts) { codec_.onMessage(conn, buf, ts); });
+}
+void Server::start()
+{
+    server_.start();
+}
+
+void Server::onConnection(const muduo::net::TcpConnectionPtr &conn)
+{
+    if (conn->connected())
+        LOG_INFO("客户端连接: {}", conn->peerAddress().toIpPort());
+    else
+        LOG_INFO("客户端断开: {}", conn->peerAddress().toIpPort());
+}
 
 void Server::onMessage(const muduo::net::TcpConnectionPtr &conn, const LengthHeaderCodec::Message &msg,
                        muduo::Timestamp receiveTime)
@@ -1251,14 +1435,27 @@ void Server::onMessage(const muduo::net::TcpConnectionPtr &conn, const LengthHea
 
     switch (msg.type)
     {
-    case MT::RECOMMEND:
+    case MT::RECOMMEND: {
         // 调用关键字推荐器
+        string result = recommender_.recommend(msg.value, 5);
+        LengthHeaderCodec::Message reply;
+        reply.type = MT::RECOMMEND;
+        reply.value = result;
+        codec_.send(conn, reply);
         break;
-    case MT::SEARCH:
+    }
+    case MT::SEARCH: {
         // 调用网页搜索器
+        string result = searcher_.search(msg.value, 10);
+        LengthHeaderCodec::Message reply;
+        reply.type = MT::SEARCH;
+        reply.value = result;
+        codec_.send(conn, reply);
         break;
+    }
     default:
         LOG_WARN("Unknown message type");
+        conn->shutdown();
         break;
     }
 }
@@ -1274,6 +1471,402 @@ int main()
     k.process("./data/corpus/CN/", "./data/corpus/EN/");
 
     LOG_INFO("项目结束运行");
+    return 0;
+}
+#endif#include "WebSearcher.h"
+#include "Logger.h"
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <utfcpp/utf8.h>
+
+using namespace std;
+using namespace nlohmann;
+WebSearcher::WebSearcher()
+{
+    LOG_INFO("==============构造网页搜索器开始=================");
+    // 加载 倒排索引库 网页库 网页偏移库
+    loadStopWords();
+    loadInvertedIndex("./outfile/invertIndex.dat");
+    loadOffsets("./outfile/offsetLib.dat");
+
+    pagesIfs_.open(pagesFile_);
+    if (!pagesIfs_.is_open())
+        LOG_ERROR("网页库打开失败: {}", pagesFile_);
+    fetchDocument(1);
+
+    vector<std::string> outKeywords;
+    computeQueryVector(
+        "在步入“金九银十”，传统家居行业迎来销售旺季之际，东阳市积极推进促进消费工作，响应“浙里来消费·2019金秋购物节”活"
+        "动，将于本月至11月推出第十一届休闲购物节。 "
+        "作为其中的一项重要活动，第二届东作红木文化艺术节将于9月29日启幕，并持续至11月20日，为消费者带来一场可观、可赏"
+        "、可购、可玩的中式文化盛宴。 "
+        "据悉，第二届东作红木文化艺术节由浙江省家具协会等单位主办，东阳市红木家具协会、东阳红木家具市场、水墨会承办。活"
+        "动地点位于东阳市世贸大道599号的东阳红木家具市场。 "
+        "在上届成功举办的基础上，本届艺术节将从层级到规模，再到内容进行全面优化提升。活动内容丰富、形式多样，旨在探讨新"
+        "经济新常态下中国传统家具的发展趋势与未来，发扬和传承中国红木文化，让红木文化更加深入民心。名家书画•红木艺术融"
+        "合展和周逢俊周逢刚水墨情思与文人空间展将贯穿本届东作红木文化艺术节始终。 "
+        "本次艺术节还将开展古风国韵——国庆游园活动、爱心助学公益活动、“国摄天香”摄影大赛活动等，推出599号超级免单节给消"
+        "费者实实在在让利，名企让利、名师赠画等一系列活动也将同期举行。 "
+        "东阳市红木家具行业协会常务副会长、东阳红木家具市场总经理曹伟表示，东阳红木产业将以本次艺术节为契机，集中宣传、"
+        "集中爆破，炮制一场中国传统文化的盛宴，向各地的消费者宣传展示东阳红木行业的发展实力，促进和拉动东阳红木商贸的发"
+        "展，提高东阳红木的知名度和美誉度。（房晓雯）",
+        outKeywords);
+}
+
+// 加载停用词
+void WebSearcher::loadStopWords()
+{
+    ifstream ifs("./data/stopwords/cn_stopwords.txt");
+    if (!ifs.is_open())
+    {
+        LOG_ERROR("停用词加载失败：{}", "./data/stopwords/cn_stopwords.txt");
+        return;
+    }
+    string line;
+    while (getline(ifs, line))
+    {
+        istringstream iss(line);
+        string word;
+        iss >> word;
+        stopWords_.emplace(word);
+    }
+
+    ifs.close();
+    LOG_INFO("停用词加载完成，共 {} 个", stopWords_.size());
+}
+
+// 加载 倒排索引库
+void WebSearcher::loadInvertedIndex(const std::string &filename)
+{
+    ifstream ifs(filename);
+
+    if (!ifs.is_open())
+    {
+        LOG_ERROR("倒排索引库加载失败");
+        return;
+    }
+
+    string line;
+    int total_lines = 0;
+    while (getline(ifs, line))
+    {
+
+        istringstream iss(line);
+        // 获取关键字
+        string word;
+        iss >> word;
+        total_lines++;
+        int docId;
+        double weight;
+        while (iss >> docId >> weight)
+        {
+            invertedIndex_[word].push_back({docId, weight});
+        }
+    }
+    ifs.close();
+
+    LOG_INFO("倒排索引库加载完成，共 {} 条,总行数:{}", invertedIndex_.size(), total_lines);
+}
+
+// 加载网页库
+
+// 加载网页偏移库
+void WebSearcher::loadOffsets(const std::string &filename)
+{
+    ifstream ifs(filename);
+    if (!ifs.is_open())
+    {
+        LOG_ERROR("加载网页偏移库失败:{}", filename);
+        return;
+    }
+
+    string line;
+    while (getline(ifs, line))
+    {
+        istringstream iss(line);
+
+        int docId;
+        long long offset;
+        long long length;
+        iss >> docId >> offset >> length;
+        offsets_[docId] = {offset, length};
+    }
+    totalDocs_ = offsets_.size();
+    ifs.close();
+    LOG_INFO("网页偏移库加载完成，共 {} 条", offsets_.size());
+}
+
+// 用偏移库定位，从网页库读取并解析一条 <doc>
+WebSearcher::DocInfo WebSearcher::fetchDocument(int docId)
+{
+    DocInfo doc;
+    auto it = offsets_.find(docId);
+    if (it == offsets_.end())
+    {
+        return doc;
+    }
+
+    long long offset = it->second.first;
+    long long length = it->second.second;
+
+    pagesIfs_.seekg(offset, ios::beg);
+
+    string raw(length, '\0');
+
+    pagesIfs_.read(&raw[0], length);
+
+    // 解析xml结构
+    auto extract = [&](const string &tag) -> string {
+        string open = "<" + tag + ">";
+        string close = "</" + tag + ">";
+
+        auto s = raw.find(open);
+        auto e = raw.find(close);
+        if (s == string::npos || e == string::npos)
+        {
+            return "";
+        }
+
+        s += open.size();
+        return raw.substr(s, e - s);
+    };
+
+    doc.id = docId;
+    doc.link = extract("link");
+    doc.title = extract("title");
+    doc.content = extract("content");
+
+    return doc;
+}
+
+// 1. 对 query 分词 + TF-IDF 归一化，返回 {词->权重}，同时输出关键词列表
+unordered_map<string, double> WebSearcher::computeQueryVector(const string &query, vector<string> &outKeywords)
+{
+    vector<string> words;
+    tokenizer_.CutForSearch(query, words, true);
+
+    // 统计词频
+    unordered_map<string, int> tf;
+
+    for (auto &word : words)
+    {
+        if (word.empty() || word == " ")
+            continue;
+        if (stopWords_.count(word))
+            continue;
+        if (word.size() < 2)
+            continue;
+        if (word.size() < 4 && (unsigned char)word[0] >= 0x80)
+            continue;
+        if (!invertedIndex_.count(word)) // 索引里没有的词直接跳过
+            continue;
+        tf[word]++;
+    }
+
+    LOG_INFO("query分词原始数量:{}, 过滤后关键词数量:{}", words.size(), tf.size());
+
+    // 收集关键词列表
+    for (const auto &[word, _] : tf)
+        outKeywords.push_back(word);
+
+    int total = 0; // 文档的总词数
+    for (const auto &[_, cnt] : tf)
+        total += cnt;
+
+    if (total == 0)
+    {
+        LOG_WARN("query[{}] 无有效关键词，返回空向量", query);
+        return {};
+    }
+
+    int N = totalDocs_;
+
+    // 计算 TF-IDF
+    unordered_map<string, double> queryVec;
+    for (const auto &[word, cnt] : tf)
+    {
+        double tfVal = double(cnt) / total;
+        double df = invertedIndex_.at(word).size();
+
+        double idf = log((double)N / (df + 1));
+        queryVec[word] = tfVal * idf;
+    }
+
+    // 归一化
+    double norm = 0.0;
+    for (const auto &[_, w] : queryVec)
+        norm += w * w;
+
+    norm = sqrt(norm);
+
+    if (norm > 0.0)
+    {
+        for (auto &[_, w] : queryVec)
+        {
+            w /= norm;
+        }
+    }
+
+    LOG_INFO("query[{}] 向量计算完成, 关键词:{}, norm:{:.4f}", query, outKeywords.size(), norm);
+    return queryVec;
+}
+
+// 2. 倒排索引求交集，找包含所有关键字的文档 id
+set<int> WebSearcher::findCandidateDocs(const vector<string> &keywords)
+{
+    if (keywords.empty())
+        return {};
+
+    // 用第一个关键词的文档列表初始化结果集
+    set<int> result;
+    for (const auto &[docId, weight] : invertedIndex_.at(keywords[0]))
+        result.insert(docId);
+
+    // 逐个关键字求交集
+    for (int i = 1; i < keywords.size(); i++)
+    {
+        const auto &list = invertedIndex_.at(keywords[i]);
+        set<int> cur;
+
+        for (const auto &[docId, _] : list)
+            cur.insert(docId);
+
+        set<int> inter;
+        set_intersection(result.begin(), result.end(), cur.begin(), cur.end(), inserter(inter, inter.begin()));
+        result = move(inter);
+
+        if (result.empty())
+        {
+            LOG_WARN("关键词交集为空，无匹配文档");
+            return {};
+        }
+    }
+    LOG_INFO("候选文档数量: {}", result.size());
+    return result;
+}
+
+double WebSearcher::cosineSimilarity(const unordered_map<string, double> &queryVec, int docId)
+{
+    double score = 0.0;
+
+    for (const auto &[word, qWeight] : queryVec)
+    {
+        auto it = invertedIndex_.find(word);
+        if (it == invertedIndex_.end())
+            continue;
+
+        for (const auto &[id, dWeight] : it->second)
+        {
+            // 在该词的倒排列表里找 docId 对应的权重
+            if (id == docId)
+            {
+                score += qWeight * dWeight;
+                break;
+            }
+        }
+    }
+    return score;
+}
+
+// 在 content 中找第一个关键词出现的位置，截取其前后共 maxLen 个字符的窗口。失败则退化为静态摘要（content 前 maxLen
+// 字符）。没搞懂
+string WebSearcher::generateAbstract(const string &content, const vector<string> &keywords, int maxLen)
+{
+    // 动态摘要:找到第一个关键词的位置
+    size_t hitPos = string::npos;
+    for (const auto &kw : keywords)
+    {
+        hitPos = content.find(kw);
+        if (hitPos != string::npos)
+            break;
+    }
+
+    // 确定截取起点(字节位置),往前回退一半窗口
+    size_t start = 0;
+    if (hitPos != string::npos)
+    {
+        start = hitPos > (size_t)(maxLen * 3 / 2) ? hitPos - maxLen * 3 / 2 : 0;
+        // 对齐到合法UTF-8字符边界
+        while (start > 0 && (content[start] & 0xc0) == 0x80)
+            --start;
+    }
+
+    // 按UTF-8字符截取maxLen个字符
+    const char *curr = content.c_str() + start;
+    const char *end = content.c_str() + content.size();
+    int count = 0;
+    const char *cut = curr;
+    while (curr != end && count < maxLen)
+    {
+        cut = curr;
+        utf8::next(curr, end);
+        ++count;
+    }
+    return content.substr(start, curr - (content.c_str() + start));
+}
+
+string WebSearcher::search(const string &query, int topK)
+{
+    // 1.计算query向量
+    vector<string> keywords;
+    auto queryVec = computeQueryVector(query, keywords);
+    if (queryVec.empty())
+    {
+        return "[]";
+    }
+
+    // 2.倒排索引求候选文档(包含所有关键词的交集)
+    auto candidates = findCandidateDocs(keywords);
+    if (candidates.empty())
+    {
+        LOG_WARN("无候选文档");
+        return "[]";
+    }
+
+    // 3.余弦相似度打分，最小堆保留topK
+    using ScoreDoc = pair<double, int>; //(score,docId)
+    priority_queue<ScoreDoc, vector<ScoreDoc>, greater<ScoreDoc>> minHeap;
+
+    for (int docId : candidates)
+    {
+        double score = cosineSimilarity(queryVec, docId);
+        if ((int)minHeap.size() < topK)
+        {
+            minHeap.push({score, docId});
+        }
+        else if (score > minHeap.top().first)
+        {
+            minHeap.pop();
+            minHeap.push({score, docId});
+        }
+    }
+
+    // 4. 取出并降序排列
+    std::vector<ScoreDoc> results;
+    while (!minHeap.empty())
+    {
+        results.push_back(minHeap.top());
+        minHeap.pop();
+    }
+    std::sort(results.rbegin(), results.rend());
+
+    // 5.拼装JSON
+    json arr = json::array();
+    for (auto &[score, docId] : results)
+    {
+        DocInfo doc = fetchDocument(docId);
+        doc.abstract = generateAbstract(doc.content, keywords);
+        arr.push_back({{"id", doc.id}, {"title", doc.title}, {"link", doc.link}, {"abstract", doc.abstract}});
+    }
+    LOG_INFO("search 完成，返回 {} 条结果", arr.size());
+    return arr.dump();
+}
+
+#ifdef SEARCH
+int main()
+{
+    WebSearcher w;
+
     return 0;
 }
 #endif

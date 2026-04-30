@@ -1,4 +1,7 @@
 #pragma once
+#include "KeywordRecommender.h"
+#include "LengthHeaderCodec.h"
+#include "WebSearcher.h"
 #include <muduo/base/Logging.h>
 #include <muduo/base/Timestamp.h>
 #include <muduo/net/Callbacks.h>
@@ -13,8 +16,6 @@
 class Server
 {
   public:
-   
-
     Server(muduo::net::EventLoop *loop, const muduo::net::InetAddress &listenAddr);
     ~Server() = default;
 
@@ -30,4 +31,6 @@ class Server
     std::set<muduo::net::TcpConnectionPtr> conns_;
     muduo::net::TcpServer server_;
     LengthHeaderCodec codec_;
+    KeywordRecommender recommender_;
+    WebSearcher searcher_;
 };

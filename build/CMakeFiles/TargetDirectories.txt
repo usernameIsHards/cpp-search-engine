@@ -1,3 +1,3 @@
-/home/acs4096/cpp-search-engine/build/CMakeFiles/main.dir
+/home/acs4096/cpp-search-engine/build/CMakeFiles/server.dir
 /home/acs4096/cpp-search-engine/build/CMakeFiles/edit_cache.dir
 /home/acs4096/cpp-search-engine/build/CMakeFiles/rebuild_cache.dir

@@ -7,11 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../)
 
 
-add_executable(main
+add_executable(server
    DirectoryScanner.cc
    KeywordProcessor.cc
    server.cc
-
+   KeywordRecommender.cc
+   LengthHeaderCodec.cc
+   PageProcessor.cc
+   WebSearcher.cc
+   main.cc
 )
 
 target_compile_options(server PRIVATE
@@ -30,8 +34,11 @@ target_link_directories(server PRIVATE
 
 
 target_link_libraries(server PRIVATE
+    muduo_net
+    muduo_base
     spdlog
-    fmt   
-    
+    fmt
+    tinyxml2
+    pthread
 )
 
